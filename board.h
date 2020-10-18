@@ -15,7 +15,9 @@ extern void board_init(board_t *board);
 
 extern void board_print(board_t *board);
 
-extern board_t* board_copy(board_t *board);
+extern void board_add_piece(board_t *board, int color, int x, int y);
+
+extern void board_copy(board_t *board_to, board_t *board_from);
 
 extern bool board_full(board_t *board);
 

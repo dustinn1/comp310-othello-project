@@ -14,17 +14,26 @@ void board_init(board_t *board) {
 }
 
 void board_print(board_t *board) {
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			if (board->pieces[i][j] != NULL) {
-				printf("%i", board->pieces[j][i]->color);
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board->pieces[y][x] != NULL) {
+				printf("%i", board->pieces[y][x]->color);
 			} else {
 				printf("-");
 			}
-			if (j != 7) printf(" ");
+			if (x != 7) printf(" ");
 		}
 		printf("\n");
 	}
+}
+
+void board_add_piece(board_t *board, int color, int x, int y) {
+	piece_t *new_piece = piece_init(color, x, y);
+	board->pieces[y][x] = new_piece;
+}
+
+void board_copy(board_t *board_to, board_t *board_from) {
+	board_to = board_from;
 }
 
 bool board_full(board_t *board) {
