@@ -1,3 +1,13 @@
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
 # Prerequisites
 *.d
 
@@ -50,3 +60,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Targets to ignore
+bin/
+lib/
