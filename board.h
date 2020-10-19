@@ -17,6 +17,8 @@ extern void board_print(board_t *board);
 
 extern void board_add_piece(board_t *board, int color, int x, int y);
 
+extern bool board_can_place(board_t *board, char* direction, piece_t* piece);
+
 extern void board_copy(board_t *board_to, board_t *board_from);
 
 extern bool board_is_full(board_t *board);
