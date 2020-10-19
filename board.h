@@ -3,11 +3,11 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "piece.h"
 
 typedef struct _board_t {
-	bool isFull;
 	piece_t* pieces[8][8];
 } board_t;
 
@@ -19,6 +19,6 @@ extern void board_add_piece(board_t *board, int color, int x, int y);
 
 extern void board_copy(board_t *board_to, board_t *board_from);
 
-extern bool board_full(board_t *board);
+extern bool board_is_full(board_t *board);
 
 #endif

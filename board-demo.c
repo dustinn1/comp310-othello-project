@@ -7,11 +7,10 @@ int main(void) {
 	
 	board_init(&board);
 	board_print(&board);
-	printf("\n");
 	board_add_piece(&board, 1, 2, 3);
 	board_print(&board);
-	//board_copy(&board2, &board);
-	//printf("\n");
-	//board_print(&board2);
+	printf(board_is_full(&board) ? "board is full\n" : "board is not full\n");
+	board_copy(&board2, &board);
+	board_print(&board2);
 	return 0;
 }
