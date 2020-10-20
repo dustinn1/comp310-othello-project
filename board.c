@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "board.h"
-
 #include "piece.h"
 
 void board_init(board_t *board) {
@@ -33,9 +32,13 @@ void board_add_piece(board_t *board, int color, int x, int y) {
 	if (board_can_place(board, "horizontal", new_piece)) {
 		board->pieces[y][x] = new_piece;
 		printf("new %s piece added at x: %i, y: %i\n", color == 0 ? "white" : "black", x, y);
+	} else if (board_can_place(board, "vertical", new_piece)) {
+		board->pieces[y][x] = new_piece;
+		printf("new %s piece added at x: %i, y: %i\n", color == 0 ? "white" : "black", x, y);
 	} else {
-		printf("cannot add new %s piece added at x: %i, y: %i\n", color == 0 ? "white" : "black", x, y);
+		printf("cannot add new %s piece added at x: %i, y: %i\n\n", color == 0 ? "white" : "black", x, y);
 	}
+
 }
 
 bool board_can_place(board_t *board, char* direction, piece_t* piece) {
