@@ -1,5 +1,4 @@
 #include "board.h"
-#include "piece.h"
 
 int main(void) {
 	static board_t board;

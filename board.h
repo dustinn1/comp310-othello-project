@@ -4,12 +4,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
-#include "piece.h"
+typedef struct _piece_t {
+	int color; // 0 = white, 1 = black
+	int x, y;	
+} piece_t;
 
 typedef struct _board_t {
 	piece_t* pieces[8][8];
 } board_t;
+
+extern piece_t* piece_init(int color, int x, int y);
 
 extern void board_init(board_t *board);
 

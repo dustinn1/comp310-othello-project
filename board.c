@@ -1,9 +1,17 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "board.h"
-#include "piece.h"
+
+piece_t* piece_init(int color, int x, int y)  {
+	piece_t *piece = (piece_t*) malloc(sizeof(piece_t));
+	piece->color = color;
+	piece->x = x;
+	piece->y = y;
+	return piece;
+}
 
 void board_init(board_t *board) {
 	board->pieces[3][3] = piece_init(0, 3, 3);
