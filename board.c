@@ -21,31 +21,32 @@ void board_init(board_t *board) {
 }
 
 void board_print(board_t *board) {
+	printf("  0 1 2 3 4 5 6 7\n");
 	for (int y = 0; y < 8; y++) {
+		printf("%i ", y);
 		for (int x = 0; x < 8; x++) {
 			if (board->pieces[y][x] != NULL) {
 				printf("%c", board->pieces[y][x]->color);
 			} else {
-				printf("*");
+				printf("·");
 			}
 			if (x != 7) printf(" ");
 		}
 		printf("\n");
 	}
-	printf("\n");
 }
 
 void board_add_piece(board_t *board, char color, int x, int y) {
 	piece_t *new_piece = piece_init(color, x, y);
-	if (board_can_place(board, "horizontal", new_piece)) {
+	if (board_can_add(board, "horizontal", new_piece)) {
 		board->pieces[y][x] = new_piece;
-	} else if (board_can_place(board, "vertical", new_piece)) {
+	} else if (board_can_add(board, "vertical", new_piece)) {
 		board->pieces[y][x] = new_piece;
 	}
 
 }
 
-bool board_can_place(board_t *board, char* direction, piece_t* piece) {
+bool board_can_add(board_t *board, char* direction, piece_t* piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	int pieceColor = piece->color;
