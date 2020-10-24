@@ -5,6 +5,9 @@
 
 #include "board.h"
 
+#define max_num(x, y) (x > y ? x : y)
+#define min_num(x, y) (x < y ? x : y)
+
 piece_t* piece_init(char color, int x, int y)  {
 	piece_t *piece = (piece_t*) malloc(sizeof(piece_t));
 	piece->color = color;
@@ -42,6 +45,8 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 		board->pieces[y][x] = new_piece;
 	} else if (board_can_add(board, "vertical", new_piece)) {
 		board->pieces[y][x] = new_piece;
+	} else if (board_can_add(board, "diagonal", new_piece)) {
+		board->pieces[y][x] = new_piece;
 	}
 
 }
@@ -51,28 +56,61 @@ bool board_can_add(board_t *board, char* direction, piece_t* piece) {
 	int pieceY = piece->y;
 	int pieceColor = piece->color;
 	if (strcmp(direction, "horizontal") == 0) {
-		if (board->pieces[pieceY][pieceX+1] != NULL || board->pieces[pieceY][pieceX-1] != NULL) {
-			for (int i = pieceX+2; i < 8; i++) {
-				if (board->pieces[pieceY][i] != NULL && board->pieces[pieceY][i]->color == pieceColor) {
+		if (board->pieces[pieceY][pieceX+1] != NULL && board->pieces[pieceY][pieceX+1]->color != pieceColor) {
+			for (int i = pieceX+2; i < 8; ++i) {
+				if (board->pieces[pieceY][i]->color == pieceColor) {
 					return true;
 				}
 			}
-			for (int i = pieceX-2; i > 0; i--) {
-				if (board->pieces[pieceY][i] != NULL && board->pieces[pieceY][i]->color == pieceColor) {
+		} else if (board->pieces[pieceY][pieceX-1] != NULL && board->pieces[pieceY][pieceX-1]->color != pieceColor) {
+			for (int i = pieceX-2; i > -1; --i) {
+				if (board->pieces[pieceY][i]->color == pieceColor) {
 					return true;
 				}
 			}
 		}
 	}
 	if (strcmp(direction, "vertical") == 0) {
-		if (board->pieces[pieceY+1][pieceX] != NULL || board->pieces[pieceY-1][pieceX] != NULL) {
-			for (int i = pieceY+2; i < 8; i++) {
-				if (board->pieces[i][pieceX] != NULL && board->pieces[i][pieceX]->color == pieceColor) {
+		if (board->pieces[pieceY+1][pieceX] != NULL && board->pieces[pieceY+1][pieceX]->color != pieceColor) {
+			for (int i = pieceY+2; i < 8; ++i) {
+				if (board->pieces[i][pieceX]->color == pieceColor) {
 					return true;
 				}
 			}
-			for (int i = pieceY-2; i > 0; i--) {
-				if (board->pieces[i][pieceX] != NULL && board->pieces[i][pieceX]->color == pieceColor) {
+		} else if (board->pieces[pieceY-1][pieceX] != NULL && board->pieces[pieceY-1][pieceX]->color != pieceColor) {
+			for (int i = pieceY-2; i > -1; --i) {
+				if (board->pieces[i][pieceX]->color == pieceColor) {
+					return true;
+				}
+			}
+		}
+	}
+	if (strcmp(direction, "diagonal") == 0) {
+		if (board->pieces[pieceY-1][pieceX+1] != NULL && board->pieces[pieceY-1][pieceX+1]->color != pieceColor) {
+			int max = max_num(pieceX, pieceY);
+			for (int i = 2; i < 7-max; ++i) {
+				if (board->pieces[pieceY-i][pieceX+i]->color == pieceColor) {
+					return true;
+				}
+			}
+		} else if (board->pieces[pieceY+1][pieceX+1] != NULL && board->pieces[pieceY+1][pieceX+1]->color != pieceColor) {
+			int max = max_num(pieceX, pieceY);
+			for (int i = 2; i < 7-max; ++i) {
+				if (board->pieces[pieceY+i][pieceX+i]->color == pieceColor) {
+					return true;
+				}
+			}
+		} else if (board->pieces[pieceY+1][pieceX-1] != NULL && board->pieces[pieceY+1][pieceX-1]->color != pieceColor) {
+			int min = min_num(pieceX, pieceY);
+			for (int i = 2; i < 1+min; --i) {
+				if (board->pieces[pieceY+i][pieceX-i]->color == pieceColor) {
+					return true;
+				}
+			}
+		} else if (board->pieces[pieceY-1][pieceX-1] != NULL && board->pieces[pieceY-1][pieceX-1]->color != pieceColor) {
+			int min = min_num(pieceX, pieceY);
+			for (int i = 2; i < 1+min; --i) {
+				if (board->pieces[pieceY-i][pieceX-i]->color == pieceColor) {
 					return true;
 				}
 			}
