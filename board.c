@@ -5,7 +5,7 @@
 
 #include "board.h"
 
-piece_t* piece_init(int color, int x, int y)  {
+piece_t* piece_init(char color, int x, int y)  {
 	piece_t *piece = (piece_t*) malloc(sizeof(piece_t));
 	piece->color = color;
 	piece->x = x;
@@ -14,19 +14,19 @@ piece_t* piece_init(int color, int x, int y)  {
 }
 
 void board_init(board_t *board) {
-	board->pieces[3][3] = piece_init(0, 3, 3);
-	board->pieces[3][4] = piece_init(1, 4, 3);
-	board->pieces[4][3] = piece_init(1, 3, 4);
-	board->pieces[4][4] = piece_init(0, 4, 4);
+	board->pieces[3][3] = piece_init('W', 3, 3);
+	board->pieces[3][4] = piece_init('B', 4, 3);
+	board->pieces[4][3] = piece_init('B', 3, 4);
+	board->pieces[4][4] = piece_init('W', 4, 4);
 }
 
 void board_print(board_t *board) {
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
 			if (board->pieces[y][x] != NULL) {
-				printf("%i", board->pieces[y][x]->color);
+				printf("%c", board->pieces[y][x]->color);
 			} else {
-				printf("-");
+				printf("*");
 			}
 			if (x != 7) printf(" ");
 		}
@@ -35,16 +35,12 @@ void board_print(board_t *board) {
 	printf("\n");
 }
 
-void board_add_piece(board_t *board, int color, int x, int y) {
+void board_add_piece(board_t *board, char color, int x, int y) {
 	piece_t *new_piece = piece_init(color, x, y);
 	if (board_can_place(board, "horizontal", new_piece)) {
 		board->pieces[y][x] = new_piece;
-		printf("new %s piece added at x: %i, y: %i\n", color == 0 ? "white" : "black", x, y);
 	} else if (board_can_place(board, "vertical", new_piece)) {
 		board->pieces[y][x] = new_piece;
-		printf("new %s piece added at x: %i, y: %i\n", color == 0 ? "white" : "black", x, y);
-	} else {
-		printf("cannot add new %s piece added at x: %i, y: %i\n\n", color == 0 ? "white" : "black", x, y);
 	}
 
 }
