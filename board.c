@@ -41,16 +41,20 @@ void board_print(board_t *board) {
 
 void board_add_piece(board_t *board, char color, int x, int y) {
 	piece_t *new_piece = piece_init(color, x, y);
-	//  clean up -- make a new function that returns bool?
-	if (board_can_add_HV(board, "horizontal", new_piece) > 0 || board_can_add_HV(board, "vertical", new_piece) > 0 ||
-			board_can_add_D(board, "topright", new_piece) > 0 || board_can_add_D(board, "bottomright", new_piece) > 0 ||
-			board_can_add_D(board, "bottomleft", new_piece) > 0 || board_can_add_D(board, "topleft", new_piece) > 0) {
+	if (board_can_add(board, new_piece)) {
 		board->pieces[y][x] = new_piece;
 	}
 
 }
 
-int board_can_add_HV(board_t *board, char* direction, piece_t *piece) {
+bool board_can_add(board_t *board, piece_t *piece) {
+	return (board_flip_amount_HV(board, "horizontal", piece) > 0 || board_flip_amount_HV(board, "vertical", piece) > 0   ||
+		board_flip_amount_D(board, "topright", piece) > 0    || board_flip_amount_D(board, "bottomright", piece) > 0 ||
+		board_flip_amount_D(board, "bottomleft", piece) > 0  || board_flip_amount_D(board, "topleft", piece) > 0);
+		
+}
+
+int board_flip_amount_HV(board_t *board, char* direction, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	int pieceColor = piece->color;
@@ -99,7 +103,7 @@ int board_can_add_HV(board_t *board, char* direction, piece_t *piece) {
 	return 0;
 }
 
-int board_can_add_D(board_t *board, char* direction, piece_t *piece) {
+int board_flip_amount_D(board_t *board, char* direction, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	int pieceColor = piece->color;

@@ -25,11 +25,11 @@ extern void board_print(board_t *board);
 
 extern void board_add_piece(board_t *board, char color, int x, int y);
 
-extern int board_can_add_HV(board_t *board, char* direction, piece_t *piece);
+extern bool board_can_add(board_t *board, piece_t *piece);
 
-extern int board_can_add_D(board_t *board, char* direction, piece_t *piece);
+extern int board_flip_amount_HV(board_t *board, char* direction, piece_t *piece);
 
-extern void board_can_place(board_t *board);
+extern int board_flip_amount_D(board_t *board, char* direction, piece_t *piece);
 
 extern void board_copy(board_t *board_to, board_t *board_from);
 
