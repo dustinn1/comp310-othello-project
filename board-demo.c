@@ -5,11 +5,11 @@ int main(void) {
 	
 	board_init(&board);
 	board_print(&board);
-
-	board_add_piece(&board, 'B', 2, 3);
-	board_print(&board);
-
+/*
 	board_add_piece(&board, 'W', 4, 2);
+	board_print(&board);
+*/	
+	board_add_piece(&board, 'B', 2, 3);
 	board_print(&board);
 
 	static board_t board2;
