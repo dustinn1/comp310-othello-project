@@ -21,11 +21,13 @@ extern piece_t* piece_init(char color, int x, int y);
 
 extern void board_init(board_t *board);
 
-extern void board_print(board_t *board);
+extern void board_print(board_t *board, char color);
 
 extern void board_add_piece(board_t *board, char color, int x, int y);
 
 extern bool board_can_add(board_t *board, piece_t *piece);
+
+extern bool board_can_add_print(board_t *board, char color, int x, int y);
 
 extern int board_flip_amount(board_t *board, char* direction, piece_t *piece);
 

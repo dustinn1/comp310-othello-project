@@ -20,13 +20,15 @@ void board_init(board_t *board) {
 	board->pieces[4][4] = piece_init('W', 4, 4);
 }
 
-void board_print(board_t *board) {
+void board_print(board_t *board, char color) {
 	printf("  0 1 2 3 4 5 6 7\n");
 	for (int y = 0; y < 8; y++) {
 		printf("%i ", y);
 		for (int x = 0; x < 8; x++) {
 			if (board->pieces[y][x] != NULL) {
 				printf("%c", board->pieces[y][x]->color);
+			} else if (board_can_add_print(board, color, x, y)) {
+				printf("▢"); // TODO change char
 			} else {
 				printf("·");
 			}
@@ -41,6 +43,8 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 	if (board_can_add(board, new_piece)) {
 		board_flip_pieces(board, new_piece);
 		board->pieces[y][x] = new_piece;
+	} else {
+		free(new_piece);
 	}
 
 }
@@ -50,6 +54,18 @@ bool board_can_add(board_t *board, piece_t *piece) {
 	return (board_flip_amount(board, "horizontal", piece) > 0 || board_flip_amount(board, "vertical", piece) > 0   ||
 		board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
 		board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
+
+}
+
+
+bool board_can_add_print(board_t *board, char color, int x, int y) {
+	// TODO improve code
+	piece_t *piece = piece_init(color, x, y);
+	bool value = (board_flip_amount(board, "horizontal", piece) > 0 || board_flip_amount(board, "vertical", piece) > 0   ||
+		      board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
+		      board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
+	free(piece);
+	return value;
 }
 
 int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
@@ -106,7 +122,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 		if (board->pieces[pieceY-1][pieceX+1] != NULL && board->pieces[pieceY-1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
-			while (pieceY-i > -1 || pieceX+i < 8) {
+			while (pieceY-i > 0 || pieceX+i < 8) {
 				i++;
 				if (board->pieces[pieceY-i][pieceX+i] == NULL) break;
 				pieces++;
@@ -136,7 +152,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 		if (board->pieces[pieceY+1][pieceX-1] != NULL && board->pieces[pieceY+1][pieceX-1]->color != pieceColor) {
 			int i = 1;;
 			int pieces = 0;
-			while (pieceY+i < 8 || pieceX-i > -1) {
+			while (pieceY+i < 8 || pieceX-i > 0) {
 				i++;
 				if (board->pieces[pieceY+i][pieceX-i] == NULL) break;
 				pieces++;
@@ -151,7 +167,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 		if (board->pieces[pieceY-1][pieceX-1] != NULL && board->pieces[pieceY-1][pieceX-1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
-			while (pieceY-i > -1 || pieceX-i > -1) {
+			while (pieceY-i > 0 || pieceX-i > 0) {
 				i++;
 				if (board->pieces[pieceY-i][pieceX-i] == NULL) break;
 				pieces++;
@@ -223,3 +239,14 @@ bool board_is_full(board_t *board) {
 	}
 	return true;
 }
+/* TODO FIX
+void board_delete(board_t *board) {
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board->pieces[y][x] != NULL) {
+				free(board->pieces[y][x]);
+			} 
+		}
+	}
+	free(board);
+} */
