@@ -27,9 +27,7 @@ extern void board_add_piece(board_t *board, char color, int x, int y);
 
 extern bool board_can_add(board_t *board, piece_t *piece);
 
-extern int board_flip_amount_HV(board_t *board, char* direction, piece_t *piece);
-
-extern int board_flip_amount_D(board_t *board, char* direction, piece_t *piece);
+extern int board_flip_amount(board_t *board, char* direction, piece_t *piece);
 
 extern void board_flip_pieces(board_t *board, piece_t *piece);
 

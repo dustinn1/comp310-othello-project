@@ -5,9 +5,6 @@
 
 #include "board.h"
 
-#define max_num(x, y) (x > y ? x : y)
-#define min_num(x, y) (x < y ? x : y)
-
 piece_t* piece_init(char color, int x, int y)  {
 	piece_t *piece = (piece_t*) malloc(sizeof(piece_t));
 	piece->color = color;
@@ -49,12 +46,13 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 }
 
 bool board_can_add(board_t *board, piece_t *piece) {
-	return (board_flip_amount_HV(board, "horizontal", piece) > 0 || board_flip_amount_HV(board, "vertical", piece) > 0   ||
-		board_flip_amount_D(board, "topright", piece) > 0    || board_flip_amount_D(board, "bottomright", piece) > 0 ||
-		board_flip_amount_D(board, "bottomleft", piece) > 0  || board_flip_amount_D(board, "topleft", piece) > 0);
+	// TODO improve code
+	return (board_flip_amount(board, "horizontal", piece) > 0 || board_flip_amount(board, "vertical", piece) > 0   ||
+		board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
+		board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
 }
 
-int board_flip_amount_HV(board_t *board, char* direction, piece_t *piece) {
+int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	char pieceColor = piece->color;
@@ -81,7 +79,7 @@ int board_flip_amount_HV(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-    if (strcmp(direction, "vertical") == 0) {
+       	if (strcmp(direction, "vertical") == 0) {
 		if (board->pieces[pieceY+1][pieceX] != NULL && board->pieces[pieceY+1][pieceX]->color != pieceColor) {
 			int pieces = 0;
 			for (int i = pieceY+2; i < 8; ++i) {
@@ -104,14 +102,7 @@ int board_flip_amount_HV(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-	return 0;
-}
-
-int board_flip_amount_D(board_t *board, char* direction, piece_t *piece) {
-	int pieceX = piece->x;
-	int pieceY = piece->y;
-	char pieceColor = piece->color;
-	if (strcmp(direction, "topright") == 0) { 
+    	if (strcmp(direction, "topright") == 0) { 
 		if (board->pieces[pieceY-1][pieceX+1] != NULL && board->pieces[pieceY-1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -178,12 +169,12 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	char pieceColor = piece->color;
-	int horizontal_amount = board_flip_amount_HV(board, "horizontal", piece);
-	int vertical_amount = board_flip_amount_HV(board, "vertical", piece);
-	int topright_amount = board_flip_amount_D(board, "topright", piece);
-	int bottomright_amount = board_flip_amount_D(board, "bottomright", piece);
-	int bottomleft_amount = board_flip_amount_D(board, "bottomleft", piece);
-	int topleft_amount = board_flip_amount_D(board, "topleft", piece);
+	int horizontal_amount = board_flip_amount(board, "horizontal", piece);
+	int vertical_amount = board_flip_amount(board, "vertical", piece);
+	int topright_amount = board_flip_amount(board, "topright", piece);
+	int bottomright_amount = board_flip_amount(board, "bottomright", piece);
+	int bottomleft_amount = board_flip_amount(board, "bottomleft", piece);
+	int topleft_amount = board_flip_amount(board, "topleft", piece);
 	if (horizontal_amount > 0) {
 		for (int i = 1; i <= horizontal_amount; i++) {
 			if (board->pieces[pieceY][pieceX+1] != NULL) board->pieces[pieceY][pieceX+i]->color = pieceColor;
