@@ -11,6 +11,7 @@ int main(void) {
 	char* currentPlayerName = "Black";
 
 	while (!board_is_full(&board)) {
+		printf("Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
 		board_print(&board, currentPlayer);
 
 		int playerX, playerY;

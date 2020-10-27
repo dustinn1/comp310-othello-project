@@ -239,6 +239,19 @@ bool board_is_full(board_t *board) {
 	}
 	return true;
 }
+
+int board_count_pieces(board_t *board, char color) {
+	int count = 0;
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board->pieces[y][x] != NULL && board->pieces[y][x]->color == color) {
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 /* TODO FIX
 void board_delete(board_t *board) {
 	for (int y = 0; y < 8; y++) {
