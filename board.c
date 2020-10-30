@@ -44,6 +44,7 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 		board_flip_pieces(board, new_piece);
 		board->pieces[y][x] = new_piece;
 	} else {
+		new_piece = (piece_t*) calloc(sizeof(new_piece), sizeof(piece_t));
 		free(new_piece);
 	}
 
@@ -64,6 +65,7 @@ bool board_can_add_print(board_t *board, char color, int x, int y) {
 	bool value = (board_flip_amount(board, "horizontal", piece) > 0 || board_flip_amount(board, "vertical", piece) > 0   ||
 		      board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
 		      board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
+	piece = (piece_t*) calloc(sizeof(piece), sizeof(piece_t));
 	free(piece);
 	return value;
 }
@@ -252,14 +254,15 @@ int board_count_pieces(board_t *board, char color) {
 	return count;
 }
 
-/* TODO FIX
 void board_delete(board_t *board) {
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
 			if (board->pieces[y][x] != NULL) {
+				board->pieces[y][x] = (piece_t*) calloc(sizeof(board->pieces[y][x]), sizeof(piece_t));
 				free(board->pieces[y][x]);
 			} 
 		}
 	}
+	board = (board_t*) calloc(sizeof(board), sizeof(board_t));
 	free(board);
-} */
+}

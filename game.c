@@ -11,9 +11,9 @@ int main(void) {
 	char* currentPlayerName = "Black";
 
 	while (!board_is_full(&board)) {
-		printf("Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
 		board_print(&board, currentPlayer);
-
+		printf("Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
+		
 		int playerX, playerY;
 		printf("\n%s: Enter the x and y to place a piece\n", currentPlayerName);
 		printf("x y: ");
@@ -25,6 +25,8 @@ int main(void) {
 		currentPlayer = currentPlayer == 'B' ? 'W' : 'B';
 		currentPlayerName = currentPlayer == 'B' ? "Black" : "White";
 	}
+
+	board_delete(&board);
 
 	return 0;
 }

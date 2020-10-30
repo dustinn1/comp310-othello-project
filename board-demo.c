@@ -35,5 +35,8 @@ int main(void) {
 
 	printf("%s", board_is_full(&board2) ? "board is full\n" : "board is not full\n");
 
+	board_delete(&board);
+	board_delete(&board2);
+	board_print(&board, 'B');
 	return 0;
 }
