@@ -37,6 +37,5 @@ int main(void) {
 
 	board_delete(&board);
 	board_delete(&board2);
-	board_print(&board, 'B');
 	return 0;
 }
