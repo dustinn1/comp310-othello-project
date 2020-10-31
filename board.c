@@ -52,7 +52,8 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 
 bool board_can_add(board_t *board, piece_t *piece) {
 	// TODO improve code
-	return (board_flip_amount(board, "horizontal", piece) > 0 || board_flip_amount(board, "vertical", piece) > 0   ||
+	return (board_flip_amount(board, "right", piece) > 0 || board_flip_amount(board, "left", piece) > 0   ||
+		board_flip_amount(board, "up", piece) > 0 || board_flip_amount(board, "down", piece) > 0   ||
 		board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
 		board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
 
@@ -62,7 +63,8 @@ bool board_can_add(board_t *board, piece_t *piece) {
 bool board_can_add_print(board_t *board, char color, int x, int y) {
 	// TODO improve code
 	piece_t *piece = piece_init(color, x, y);
-	bool value = (board_flip_amount(board, "horizontal", piece) > 0 || board_flip_amount(board, "vertical", piece) > 0   ||
+	bool value = (board_flip_amount(board, "right", piece) > 0 || board_flip_amount(board, "left", piece) > 0   ||
+		      board_flip_amount(board, "up", piece) > 0 || board_flip_amount(board, "down", piece) > 0   ||
 		      board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
 		      board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
 	piece = (piece_t*) calloc(sizeof(piece), sizeof(piece_t));
@@ -74,7 +76,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	char pieceColor = piece->color;
-	if (strcmp(direction, "horizontal") == 0) {
+	if (strcmp(direction, "right") == 0) {
 		if (board->pieces[pieceY][pieceX+1] != NULL && board->pieces[pieceY][pieceX+1]->color != pieceColor) {
 			int pieces = 0;
 			for (int i = pieceX+2; i < 8; ++i) {
@@ -85,7 +87,10 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 				}
 			}
 			return 0;
-		} else if (board->pieces[pieceY][pieceX-1] != NULL && board->pieces[pieceY][pieceX-1]->color != pieceColor) {
+		}
+	}
+	if (strcmp(direction, "left") == 0) {
+        	if (board->pieces[pieceY][pieceX-1] != NULL && board->pieces[pieceY][pieceX-1]->color != pieceColor) {
 			int pieces = 0;
 			for (int i = pieceX-2; i > -1; --i) {
 				pieces++;
@@ -97,7 +102,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-       	if (strcmp(direction, "vertical") == 0) {
+       	if (strcmp(direction, "up") == 0) {
 		if (board->pieces[pieceY+1][pieceX] != NULL && board->pieces[pieceY+1][pieceX]->color != pieceColor) {
 			int pieces = 0;
 			for (int i = pieceY+2; i < 8; ++i) {
@@ -108,7 +113,10 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 				}
 			}
 			return 0;
-		} else if (board->pieces[pieceY-1][pieceX] != NULL && board->pieces[pieceY-1][pieceX]->color != pieceColor) {
+		}
+	}
+	if (strcmp(direction, "down") == 0) {
+		if (board->pieces[pieceY-1][pieceX] != NULL && board->pieces[pieceY-1][pieceX]->color != pieceColor) {
 			int pieces = 0;
 			for (int i = pieceY-2; i > -1; --i) {
 				pieces++;
@@ -187,21 +195,31 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	char pieceColor = piece->color;
-	int horizontal_amount = board_flip_amount(board, "horizontal", piece);
-	int vertical_amount = board_flip_amount(board, "vertical", piece);
+	int up_amount = board_flip_amount(board, "up", piece);
+	int down_amount = board_flip_amount(board, "down", piece);
+	int right_amount = board_flip_amount(board, "right", piece);
+	int left_amount = board_flip_amount(board, "left", piece);
 	int topright_amount = board_flip_amount(board, "topright", piece);
 	int bottomright_amount = board_flip_amount(board, "bottomright", piece);
 	int bottomleft_amount = board_flip_amount(board, "bottomleft", piece);
 	int topleft_amount = board_flip_amount(board, "topleft", piece);
-	if (horizontal_amount > 0) {
-		for (int i = 1; i <= horizontal_amount; i++) {
+	if (right_amount > 0) {
+		for (int i = 1; i <= right_amount; i++) {
 			if (board->pieces[pieceY][pieceX+1] != NULL) board->pieces[pieceY][pieceX+i]->color = pieceColor;
+		}
+	}
+	if (left_amount > 0) {
+		for (int i = 1; i <= left_amount; i++) {
 			if (board->pieces[pieceY][pieceX-1] != NULL) board->pieces[pieceY][pieceX-i]->color = pieceColor;
 		}
-	} 
-	if (vertical_amount > 0) {
-		for (int i = 1; i <= vertical_amount; ++i) {
+	}
+	if (up_amount > 0) {
+		for (int i = 1; i <= up_amount; ++i) {
 			if (board->pieces[pieceY+1][pieceX] != NULL) board->pieces[pieceY+i][pieceX]->color = pieceColor;
+		}
+	}
+	if (down_amount > 0) {
+		for (int i = 1; i <= down_amount; ++i) {
 			if (board->pieces[pieceY-1][pieceX] != NULL) board->pieces[pieceY-i][pieceX]->color = pieceColor;
 		}
 	}
