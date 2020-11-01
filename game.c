@@ -18,6 +18,13 @@ int main(void) {
 		printf("\n%s: Enter the x and y to place a piece\n", currentPlayerName);
 		printf("x y: ");
 		scanf("%d %d", &playerX, &playerY);
+		while ((playerX < 0 || playerX > 7) || (playerY < 0 || playerY > 7)) {
+			printf("Please enter a valid coordinate (x and y >= 0 and <= 7)\n");
+			printf("x y: ");
+			scanf("%d %d", &playerX, &playerY);
+		}
+
+
 		printf("\n%s piece added at x: %i, y: %i \n", currentPlayerName, playerX, playerY);
 		
 		board_add_piece(&board, currentPlayer, playerX, playerY);
