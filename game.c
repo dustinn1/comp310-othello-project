@@ -39,6 +39,13 @@ int main(void) {
 		currentPlayerName = currentPlayer == 'B' ? "Black" : "White";
 	}
 
+	int BPieces = board_count_pieces(&board, 'B');
+	int WPieces = board_count_pieces(&board, 'W');
+	
+	printf("========================================");
+	printf("\n\t %s Player Wins \t\n", BPieces > WPieces ? "Black" : "White");
+	printf("========================================\n");
+
 	board_delete(&board);
 
 	return 0;
