@@ -15,7 +15,6 @@ piece_t* piece_init(char color, int x, int y)  {
 }
 
 void board_init(board_t *board) {
-	board->points_amount = 0;
 	board->pieces[3][3] = piece_init('W', 3, 3);
 	board->pieces[3][4] = piece_init('B', 4, 3);
 	board->pieces[4][3] = piece_init('B', 3, 4);
@@ -24,6 +23,7 @@ void board_init(board_t *board) {
 
 void board_print(board_t *board, char color) {
 	printf("  0 1 2 3 4 5 6 7\n");
+	int amount = 0;
 	for (int y = 0; y < 8; y++) {
 		printf("%i ", y);
 		for (int x = 0; x < 8; x++) {
@@ -31,8 +31,8 @@ void board_print(board_t *board, char color) {
 				printf("%c", board->pieces[y][x]->color);
 			} else if (board_can_add_print(board, color, x, y)) {
 				printf("▢");
-				board->points[board->points_amount] = point_init(x, y);
-				board->points_amount++;
+				board->points[amount] = point_init(x, y);
+				amount++;
 			} else {
 				printf("·");
 			}
@@ -40,8 +40,8 @@ void board_print(board_t *board, char color) {
 		}
 		printf("\n");
 	}
-	printf("Available coordinates (%i): ", board->points_amount);
-	points_print(board->points, board->points_amount);
+	printf("Available coordinates: ");
+	points_print(board->points, amount);
 	printf("\n");
 }
 

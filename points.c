@@ -16,24 +16,28 @@ void point_delete(point_t *point) {
 	free(point);
 }
 
-bool points_contains(point_t **points, int points_amount, int x, int y) {
-	for (int i = 0; i < points_amount; ++i) {
-		if (points[i]->x == x && points[i]->y == y) {
+bool points_contains(point_t **points, int x, int y) {
+	for (int i = 0; i < 50; ++i) {
+		if (points[i] != NULL && points[i]->x == x && points[i]->y == y) {
 			return true;
 		}
 	}
 	return false;
 }
 
-void points_reset(point_t **points, int points_amount) {
-	for (int i = 0; i < points_amount; ++i) {
-		point_delete(points[i]);
+bool points_is_empty(point_t **points) {
+	return (points[0] == NULL);
+}
+
+void points_reset(point_t **points) {
+	for (int i = 0; i < 50; ++i) {
+		if (points[i] != NULL) point_delete(points[i]);
 	}
 }
 
-void points_print(point_t **points, int points_amount) {
-	for (int i = 0; i < points_amount; ++i) {
+void points_print(point_t **points, int amount) {
+	for (int i = 0; i < amount; ++i) {
 		printf("%i, %i", points[i]->x, points[i]->y);
-		if (i != points_amount-1) printf(" | ");
+		if (i != amount-1) printf(" | ");
 	}
 }

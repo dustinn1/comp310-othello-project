@@ -13,10 +13,12 @@ extern point_t* point_init(int x, int y);
 
 extern void point_delete(point_t *point);
 
-extern bool points_contains(point_t **points, int points_amount, int x, int y);
+extern bool points_contains(point_t **points, int x, int y);
 
-extern void points_reset(point_t **points, int points_amount);
+extern bool points_is_empty(point_t **points);
 
-extern void points_print(point_t **points, int points_amount);
+extern void points_reset(point_t **points);
+
+extern void points_print(point_t **points, int amount);
 
 #endif
