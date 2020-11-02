@@ -30,7 +30,7 @@ void board_print(board_t *board, char color) {
 			if (board->pieces[y][x] != NULL) {
 				printf("%c", board->pieces[y][x]->color);
 			} else if (board_can_add_print(board, color, x, y)) {
-				if (color == 'B') {
+				if (color == 'W') {
 					printf("◼");
 				} else {
 					printf("◻");

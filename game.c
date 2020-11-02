@@ -42,6 +42,9 @@ int main(void) {
 	int BPieces = board_count_pieces(&board, 'B');
 	int WPieces = board_count_pieces(&board, 'W');
 	
+	board_print(&board, currentPlayer);
+	printf("Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
+
 	printf("========================================");
 	printf("\n\t %s Player Wins \t\n", BPieces > WPieces ? "Black" : "White");
 	printf("========================================\n");
