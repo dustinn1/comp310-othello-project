@@ -28,7 +28,7 @@ void board_print(board_t *board, char color) {
 			if (board->pieces[y][x] != NULL) {
 				printf("%c", board->pieces[y][x]->color);
 			} else if (board_can_add_print(board, color, x, y)) {
-				printf("▢"); // TODO change char
+				printf("▢");
 			} else {
 				printf("·");
 			}
@@ -75,7 +75,22 @@ bool board_can_add_print(board_t *board, char color, int x, int y) {
 int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
-	char pieceColor = piece->color;
+	char pieceColor = piece->color;	
+	if (strcmp(direction, "left") == 0) {
+        	if (pieceX != 0 && board->pieces[pieceY][pieceX-1] != NULL && board->pieces[pieceY][pieceX-1]->color != pieceColor) {	
+			int i = 1;
+			int pieces = 0;
+			while (pieceX-i > -1) {
+				i++;
+				if (board->pieces[pieceY][pieceX-i] == NULL) break;
+				pieces++;
+				if (board->pieces[pieceY][pieceX-i]->color == pieceColor) {
+					return pieces;
+				}
+			}
+			return 0;
+		}
+	}
 	if (strcmp(direction, "right") == 0) {
 		if (pieceX != 7 && board->pieces[pieceY][pieceX+1] != NULL && board->pieces[pieceY][pieceX+1]->color != pieceColor) {	
 			int i = 1;
@@ -91,15 +106,15 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-	if (strcmp(direction, "left") == 0) {
-        	if (pieceX != 0 && board->pieces[pieceY][pieceX-1] != NULL && board->pieces[pieceY][pieceX-1]->color != pieceColor) {	
+	if (strcmp(direction, "up") == 0) {
+		if (pieceY != 0 && board->pieces[pieceY-1][pieceX] != NULL && board->pieces[pieceY-1][pieceX]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
-			while (pieceX-i > -1) {
+			while (pieceY-i > -1) {
 				i++;
-				if (board->pieces[pieceY][pieceX-i] == NULL) break;
+				if (board->pieces[pieceY-i][pieceX] == NULL) break;
 				pieces++;
-				if (board->pieces[pieceY][pieceX-i]->color == pieceColor) {
+				if (board->pieces[pieceY-i][pieceX]->color == pieceColor) {
 					return pieces;
 				}
 			}
@@ -121,22 +136,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 
 		}
-	}
-	if (strcmp(direction, "up") == 0) {
-		if (pieceY != 0 && board->pieces[pieceY-1][pieceX] != NULL && board->pieces[pieceY-1][pieceX]->color != pieceColor) {
-			int i = 1;
-			int pieces = 0;
-			while (pieceY-i > -1) {
-				i++;
-				if (board->pieces[pieceY-i][pieceX] == NULL) break;
-				pieces++;
-				if (board->pieces[pieceY-i][pieceX]->color == pieceColor) {
-					return pieces;
-				}
-			}
-			return 0;
-		}
-	}
+	}	
     	if (strcmp(direction, "topright") == 0) { 
 		if (pieceX != 7 && pieceY != 0 && board->pieces[pieceY-1][pieceX+1] != NULL && board->pieces[pieceY-1][pieceX+1]->color != pieceColor) {
 			int i = 1;
@@ -206,20 +206,20 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 	char pieceColor = piece->color;
 	int up_amount = board_flip_amount(board, "up", piece);
 	int down_amount = board_flip_amount(board, "down", piece);
-	int right_amount = board_flip_amount(board, "right", piece);
 	int left_amount = board_flip_amount(board, "left", piece);
+	int right_amount = board_flip_amount(board, "right", piece);
 	int topright_amount = board_flip_amount(board, "topright", piece);
 	int bottomright_amount = board_flip_amount(board, "bottomright", piece);
 	int bottomleft_amount = board_flip_amount(board, "bottomleft", piece);
 	int topleft_amount = board_flip_amount(board, "topleft", piece);
-	if (right_amount > 0) {
-		for (int i = 1; i <= right_amount; i++) {
-			 board->pieces[pieceY][pieceX+i]->color = pieceColor;
-		}
-	}
 	if (left_amount > 0) {
 		for (int i = 1; i <= left_amount; i++) {
 			board->pieces[pieceY][pieceX-i]->color = pieceColor;
+		}
+	}
+	if (right_amount > 0) {
+		for (int i = 1; i <= right_amount; i++) {
+			 board->pieces[pieceY][pieceX+i]->color = pieceColor;
 		}
 	}
 	if (up_amount > 0) {
