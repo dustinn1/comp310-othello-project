@@ -58,22 +58,22 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 }
 
 bool board_can_add(board_t *board, piece_t *piece) {
-	// TODO improve code
-	return (board_flip_amount(board, "right", piece) > 0 || board_flip_amount(board, "left", piece) > 0   ||
-		board_flip_amount(board, "up", piece) > 0 || board_flip_amount(board, "down", piece) > 0   ||
-		board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
-		board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
+	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
+	for (int i = 0; i < 8; i++) {
+		if (board_flip_amount(board, directions[i], piece) > 0) return true;
+	}
+	return false;
 
 }
 
 
 bool board_can_add_print(board_t *board, char color, int x, int y) {
-	// TODO improve code
 	piece_t *piece = piece_init(color, x, y);
-	bool value = (board_flip_amount(board, "right", piece) > 0 || board_flip_amount(board, "left", piece) > 0   ||
-		      board_flip_amount(board, "up", piece) > 0 || board_flip_amount(board, "down", piece) > 0   ||
-		      board_flip_amount(board, "topright", piece) > 0    || board_flip_amount(board, "bottomright", piece) > 0 ||
-		      board_flip_amount(board, "bottomleft", piece) > 0  || board_flip_amount(board, "topleft", piece) > 0);
+	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
+	bool value = false; 
+	for (int i = 0; i < 8; i++) {	
+		if (board_flip_amount(board, directions[i], piece) > 0) value = true;
+	}
 	piece = (piece_t*) calloc(sizeof(piece), sizeof(piece_t));
 	free(piece);
 	return value;
