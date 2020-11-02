@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "board.h"
+#include "points.h"
 
 piece_t* piece_init(char color, int x, int y)  {
 	piece_t *piece = (piece_t*) malloc(sizeof(piece_t));
@@ -14,6 +15,7 @@ piece_t* piece_init(char color, int x, int y)  {
 }
 
 void board_init(board_t *board) {
+	board->points_amount = 0;
 	board->pieces[3][3] = piece_init('W', 3, 3);
 	board->pieces[3][4] = piece_init('B', 4, 3);
 	board->pieces[4][3] = piece_init('B', 3, 4);
@@ -29,6 +31,8 @@ void board_print(board_t *board, char color) {
 				printf("%c", board->pieces[y][x]->color);
 			} else if (board_can_add_print(board, color, x, y)) {
 				printf("▢");
+				board->points[board->points_amount] = point_init(x, y);
+				board->points_amount++;
 			} else {
 				printf("·");
 			}
@@ -36,6 +40,9 @@ void board_print(board_t *board, char color) {
 		}
 		printf("\n");
 	}
+	printf("Available coordinates (%i): ", board->points_amount);
+	points_print(board->points, board->points_amount);
+	printf("\n");
 }
 
 void board_add_piece(board_t *board, char color, int x, int y) {

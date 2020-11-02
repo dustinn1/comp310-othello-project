@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "points.h"
+
 #define BOARD_SIZE 8
 
 typedef struct _piece_t {
@@ -14,6 +16,8 @@ typedef struct _piece_t {
 } piece_t;
 
 typedef struct _board_t {
+	point_t* points[50];
+	int points_amount;
 	piece_t* pieces[BOARD_SIZE][BOARD_SIZE];
 } board_t;
 
