@@ -14,6 +14,7 @@ piece_t* piece_init(char color, int x, int y)  {
 	return piece;
 }
 
+// initialize the board by adding the 4 pieces in the middle
 void board_init(board_t *board) {
 	board->pieces[3][3] = piece_init('W', 3, 3);
 	board->pieces[3][4] = piece_init('B', 4, 3);
@@ -21,6 +22,7 @@ void board_init(board_t *board) {
 	board->pieces[4][4] = piece_init('W', 4, 4);
 }
 
+// print the board with the pieces. Put squares to represent potential spots to place a piece on
 void board_print(board_t *board, char color) {
 	printf("  0 1 2 3 4 5 6 7\n");
 	int amount = 0;
@@ -35,6 +37,7 @@ void board_print(board_t *board, char color) {
 				} else {
 					printf("◻");
 				}
+				// add the coordinate to an array
 				board->points[amount] = point_init(x, y);
 				amount++;
 			} else {
@@ -44,11 +47,13 @@ void board_print(board_t *board, char color) {
 		}
 		printf("\n");
 	}
+	// print the list of coordinates of the squares
 	printf("Available coordinates: ");
 	points_print(board->points, amount);
 	printf("\n");
 }
 
+// add a piece to the board only if the position (x,y) is a playable spot to put a piece on
 void board_add_piece(board_t *board, char color, int x, int y) {
 	piece_t *new_piece = piece_init(color, x, y);
 	if (board_can_add(board, new_piece)) {
@@ -61,6 +66,8 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 
 }
 
+// check to see if the piece can be added by seeing if placing it will flip any pieces in any direction
+// returns true if it can flip at least 1 piece. else, return false.
 bool board_can_add(board_t *board, piece_t *piece) {
 	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
 	for (int i = 0; i < 8; i++) {
@@ -70,7 +77,7 @@ bool board_can_add(board_t *board, piece_t *piece) {
 
 }
 
-
+// same as above but will create a temp piece to check
 bool board_can_add_print(board_t *board, char color, int x, int y) {
 	piece_t *piece = piece_init(color, x, y);
 	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
@@ -83,6 +90,11 @@ bool board_can_add_print(board_t *board, char color, int x, int y) {
 	return value;
 }
 
+// returns the amount of pieces that a piece will flip depending on the direction
+// depending on the direction, it will check to see 1) if the piece is next to another piece in that direction
+// and 2) if that piece next to it is a different color
+// if true to both, then it will go to the next piece in that direction and continue until it finds
+// a piece with the same color as newly added piece.
 int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
@@ -211,6 +223,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 	return 0;
 }
 
+// flip the number of pieces (if possible) in all 8 directions of the newly placed piece
 void board_flip_pieces(board_t *board, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
