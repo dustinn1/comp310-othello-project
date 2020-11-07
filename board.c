@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <curses.h>
 
 #include "board.h"
 #include "points.h"
@@ -24,33 +25,33 @@ void board_init(board_t *board) {
 
 // print the board with the pieces. Put squares to represent potential spots to place a piece on
 void board_print(board_t *board, char color) {
-	printf("  0 1 2 3 4 5 6 7\n");
+	printw("  0 1 2 3 4 5 6 7\n");
 	int amount = 0;
 	for (int y = 0; y < 8; y++) {
-		printf("%i ", y);
+		printw("%i ", y);
 		for (int x = 0; x < 8; x++) {
 			if (board->pieces[y][x] != NULL) {
-				printf("%c", board->pieces[y][x]->color);
+				printw("%c", board->pieces[y][x]->color);
 			} else if (board_can_add_print(board, color, x, y)) {
 				if (color == 'W') {
-					printf("◼");
+					printw("◼");
 				} else {
-					printf("◻");
+					printw("◻");
 				}
 				// add the coordinate to an array
 				board->points[amount] = point_init(x, y);
 				amount++;
 			} else {
-				printf("·");
+				printw("·");
 			}
-			if (x != 7) printf(" ");
+			if (x != 7) printw(" ");
 		}
 		printf("\n");
 	}
 	// print the list of coordinates of the squares
-	printf("Available coordinates: ");
+	printw("Available coordinates: ");
 	points_print(board->points, amount);
-	printf("\n");
+	printw("\n");
 }
 
 // add a piece to the board only if the position (x,y) is a playable spot to put a piece on

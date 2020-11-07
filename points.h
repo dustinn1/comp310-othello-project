@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <curses.h>
 
 typedef struct _point_t {
 	int x, y;

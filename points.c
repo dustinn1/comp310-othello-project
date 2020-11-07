@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <curses.h>
 
 #include "points.h"
 
@@ -37,7 +38,7 @@ void points_reset(point_t **points) {
 
 void points_print(point_t **points, int amount) {
 	for (int i = 0; i < amount; ++i) {
-		printf("%i, %i", points[i]->x, points[i]->y);
-		if (i != amount-1) printf(" | ");
+		printw("%i, %i", points[i]->x, points[i]->y);
+		if (i != amount-1) printw(" | ");
 	}
 }
