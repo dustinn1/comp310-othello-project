@@ -9,9 +9,14 @@
 
 int main(void) {
 	// initialize curses
-	initscr();
-	cbreak();
+	WINDOW* mainwin;
+	int ch;
+	
+	if ((mainwin = initscr()) == NULL) {
+		exit(EXIT_FAILURE);
+	}
 	noecho();
+	start_color();
 
 	// initialize othello game
 	static board_t board;
@@ -20,39 +25,30 @@ int main(void) {
 	char currentPlayer = 'B';
 	char* currentPlayerName = "Black";
 
-	clear();
-	mvprintw(5, 20, "\n====================== %s's turn ====================\n\n", currentPlayerName);
-	board_print(&board, currentPlayer);
-	mvprintw(7, 20, "Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
-	refresh();
-
-
-
-/*
 	while (!board_is_full(&board)) {
-		clear();
-		mvprintw(5, 20, "\n====================== %s's turn ====================\n\n", currentPlayerName);
+		mvprintw(2, 4, "%s's turn", currentPlayerName);
 		board_print(&board, currentPlayer);
-		mvprintw(7, 20, "Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
+		mvprintw(14, 4, "Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
 
 		int playerX, playerY;
 		if (!points_is_empty(board.points)) {
-			mvprintw(10, 20, "\n%s: Enter the x and y to place a piece\n", currentPlayerName);
-			mvprintw(12, 20, "x y: ");
+			mvprintw(16, 4, "%s: Enter the x and y to place a piece\n", currentPlayerName);
+			mvprintw(18, 4, "x y: ");
 			refresh();
-			//scanw("%d %d", &playerX, &playerY);
-			//refresh();
+			scanw("%d %d", &playerX, &playerY);
+			refresh();
 			while (((playerX < 0 || playerX > 7) || (playerY < 0 || playerY > 7)) || !points_contains(board.points, playerX, playerY)) {
 				printf("Please enter a valid coordinate (x and y >= 0 and <= 7)\n");
 				printf("x y: ");
 				scanf("%d %d", &playerX, &playerY);
 			}
 
-			mvprintw(15, 20, "\n%s piece added at x: %i, y: %i \n", currentPlayerName, playerX, playerY);
-			refresh();
+			//mvprintw(20, 4, "\n%s piece added at x: %i, y: %i \n", currentPlayerName, playerX, playerY);
+			//refresh();
 			board_add_piece(&board, currentPlayer, playerX, playerY);
 			points_reset(board.points);
 			refresh();
+			clear();
 		}
 
 		currentPlayer = currentPlayer == 'B' ? 'W' : 'B';
@@ -68,7 +64,8 @@ int main(void) {
 	printf("========================================");
 	printf("\n\t %s Player Wins \t\n", BPieces > WPieces ? "Black" : "White");
 	printf("========================================\n");
-*/
+
+	
 	board_delete(&board);
 
 	exit(0);
