@@ -11,12 +11,15 @@ int main(void) {
 	// initialize curses
 	WINDOW* mainwin;
 	int ch;
-	
+
 	if ((mainwin = initscr()) == NULL) {
 		exit(EXIT_FAILURE);
 	}
 	int widthcenter = (getmaxx(mainwin)/2)-20;
 	start_color();
+	
+	init_pair('r', COLOR_RED, COLOR_BLACK);
+	init_pair('w', COLOR_WHITE, COLOR_BLACK);
 
 	// initialize othello game
 	static board_t board;
@@ -38,7 +41,9 @@ int main(void) {
 			scanw("%d %d", &playerX, &playerY);
 			refresh();
 			while (((playerX < 0 || playerX > 7) || (playerY < 0 || playerY > 7)) || !points_contains(board.points, playerX, playerY)) {
+				color_set('r', NULL);
 				mvprintw(20, widthcenter-13, "Please enter a valid coordinate (x and y >= 0 and <= 7)");
+				color_set('w', NULL);
 				move(22, widthcenter-13);
 				clrtoeol();
 				printw("x y: ");
