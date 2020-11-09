@@ -7,6 +7,11 @@
 #include "board.h"
 #include "points.h"
 
+#define PLAYER 'P'
+#define PLAYER_COLOR "red"
+#define COMPUTER 'C'
+#define COMPUTER_COLOR "blue"
+
 piece_t* piece_init(char color, int x, int y)  {
 	piece_t *piece = (piece_t*) malloc(sizeof(piece_t));
 	piece->color = color;
@@ -17,10 +22,10 @@ piece_t* piece_init(char color, int x, int y)  {
 
 // initialize the board by adding the 4 pieces in the middle
 void board_init(board_t *board) {
-	board->pieces[3][3] = piece_init('W', 3, 3);
-	board->pieces[3][4] = piece_init('B', 4, 3);
-	board->pieces[4][3] = piece_init('B', 3, 4);
-	board->pieces[4][4] = piece_init('W', 4, 4);
+	board->pieces[3][3] = piece_init(COMPUTER, 3, 3);
+	board->pieces[3][4] = piece_init(PLAYER, 4, 3);
+	board->pieces[4][3] = piece_init(PLAYER, 3, 4);
+	board->pieces[4][4] = piece_init(COMPUTER, 4, 4);
 }
 
 // print the board with the pieces. Put squares to represent potential spots to place a piece on
