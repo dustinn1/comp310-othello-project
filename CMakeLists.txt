@@ -15,14 +15,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-#add_executable(game game.c board.c points.c)
-#target_link_libraries(game -lm)
-
-add_executable(gamecurses gamecurses.c board.c points.c)
-target_link_libraries(gamecurses ncurses)
-
-#add_executable(board-demo board-demo.c board.c points.c)
-#target_link_libraries(board-demo -lm)
+add_executable(game game.c board.c points.c)
+target_link_libraries(game ncurses)
 
 #add_executable(board_tests board_tests.cc board.c points.c)
 #target_link_libraries(board_tests ${GTEST_LIBRARIES} -lpthread)
