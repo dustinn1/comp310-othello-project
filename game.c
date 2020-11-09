@@ -46,48 +46,50 @@ int main(void) {
 		srand(time(0));		
 
 		int x, y;
-		if (!points_is_empty(board.points)) {
-			mvprintw(0, widthcenter, "%i", numPoints);
-			mvprintw(18, widthcenter-13, "%s: Enter the x and y to place a piece\n", currentPlayerName);
-			mvprintw(20, widthcenter-13, "x y: ");
-			refresh();
-			if (currentPlayer == PLAYER) {
-				scanw("%d %d", &x, &y);
+		if (numPoints > 0) {
+			if (!points_is_empty(board.points)) {
+				mvprintw(18, widthcenter-13, "%s: Enter the x and y to place a piece\n", currentPlayerName);
+				mvprintw(20, widthcenter-13, "x y: ");
 				refresh();
-				while (((x < 0 || x > 7) || (y < 0 || y > 7)) || !points_contains(board.points, x, y)) {
-					color_set('r', NULL);
-					mvprintw(20, widthcenter-13, "Please enter a valid coordinate (x and y >= 0 and <= 7)");
-					color_set('w', NULL);
-					move(22, widthcenter-13);
-					clrtoeol();
-					printw("x y: ");
+				if (currentPlayer == PLAYER) {
 					scanw("%d %d", &x, &y);
-				}
-			} else if (currentPlayer == COMPUTER) {
-				int randPoint = rand() % numPoints+1;
-				sleep(3);
-				x = board.points[randPoint]->x;
-				y = board.points[randPoint]->y;
-			}	
-			board_add_piece(&board, currentPlayer, x, y);
-			points_reset(board.points);
-			clear();
-			refresh();
-			mvprintw(24, widthcenter-10, "%s piece added at x: %i, y: %i", currentPlayerName, x, y);	
+					refresh();
+					while (((x < 0 || x > 7) || (y < 0 || y > 7)) || !points_contains(board.points, x, y)) {
+						color_set('r', NULL);
+						mvprintw(20, widthcenter-13, "Please enter a valid coordinate (x and y >= 0 and <= 7)");
+						color_set('w', NULL);
+						move(22, widthcenter-13);
+						clrtoeol();
+						printw("x y: ");
+						scanw("%d %d", &x, &y);
+					}
+				} else if (currentPlayer == COMPUTER) {
+					int randPoint = rand() % numPoints;
+					sleep(3);
+					x = board.points[randPoint]->x;
+					y = board.points[randPoint]->y;
+				}	
+				board_add_piece(&board, currentPlayer, x, y);
+				points_reset(board.points);
+				clear();
+				refresh();
+				mvprintw(24, widthcenter-10, "%s piece added at x: %i, y: %i", currentPlayerName, x, y);	
+			}
 		}
-
 		currentPlayer = currentPlayer == PLAYER ? COMPUTER : PLAYER;
 		currentPlayerName = currentPlayer == PLAYER ? PLAYER_NAME : COMPUTER_NAME;
 	}
-/*
-	int BPieces = board_count_pieces(&board, 'B');
-	int WPieces = board_count_pieces(&board, 'W');
 
+	int PPieces = board_count_pieces(&board, PLAYER);
+	int CPieces = board_count_pieces(&board, COMPUTER);
+
+	clear();
 	board_print(&board, currentPlayer, widthcenter+3);
-	mvprintw(4, widthcenter-9, "Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
-	mvprintw(4, widthcenter-9, "\n\t %s Player Wins \t\n", BPieces > WPieces ? "Black" : "White");
+	mvprintw(18, widthcenter-9, "%s: %i pieces, %s: %i pieces", PLAYER_NAME, board_count_pieces(&board, PLAYER), COMPUTER_NAME, board_count_pieces(&board, COMPUTER));
+	mvprintw(20, widthcenter-9, "\t %s Player Wins \t", PPieces > CPieces ? PLAYER_NAME : COMPUTER_NAME);
 	refresh();
-*/	
+	sleep(10);
+	
 	board_delete(&board);
 
 	endwin();
