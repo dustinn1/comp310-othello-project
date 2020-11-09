@@ -25,7 +25,7 @@ extern piece_t* piece_init(char color, int x, int y);
 
 extern void board_init(board_t *board);
 
-extern void board_print(board_t *board, char color, int widthcenter);
+extern int board_print(board_t *board, char color, int widthcenter);
 
 extern void board_add_piece(board_t *board, char color, int x, int y);
 

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <time.h>
 
 #include "board.h"
 #include "points.h"
@@ -25,6 +27,7 @@ int main(void) {
 	start_color();
 	
 	init_pair('r', COLOR_RED, COLOR_BLACK);
+	init_pair('b', COLOR_BLUE, COLOR_BLACK);
 	init_pair('w', COLOR_WHITE, COLOR_BLACK);
 
 	// initialize othello game
@@ -35,33 +38,42 @@ int main(void) {
 	char* currentPlayerName = PLAYER_NAME;
 
 	while (!board_is_full(&board)) {
+		int numPoints;
 		mvprintw(2, widthcenter, "%s's turn", currentPlayerName);
 		mvprintw(4, widthcenter-9, "%s: %i pieces, %s: %i pieces\n", PLAYER_NAME, board_count_pieces(&board, PLAYER), COMPUTER_NAME, board_count_pieces(&board, COMPUTER));
-		board_print(&board, currentPlayer, widthcenter-3);
+		numPoints = board_print(&board, currentPlayer, widthcenter-3);
+
+		srand(time(0));		
 
 		int x, y;
 		if (!points_is_empty(board.points)) {
+			mvprintw(0, widthcenter, "%i", numPoints);
 			mvprintw(18, widthcenter-13, "%s: Enter the x and y to place a piece\n", currentPlayerName);
 			mvprintw(20, widthcenter-13, "x y: ");
 			refresh();
-			scanw("%d %d", &x, &y);
-			refresh();
-			while (((x < 0 || x > 7) || (y < 0 || y > 7)) || !points_contains(board.points, x, y)) {
-				color_set('r', NULL);
-				mvprintw(20, widthcenter-13, "Please enter a valid coordinate (x and y >= 0 and <= 7)");
-				color_set('w', NULL);
-				move(22, widthcenter-13);
-				clrtoeol();
-				printw("x y: ");
+			if (currentPlayer == PLAYER) {
 				scanw("%d %d", &x, &y);
-			}
-
-			//mvprintw(20, 4, "\n%s piece added at x: %i, y: %i \n", currentPlayerName, playerX, playerY);
-			//refresh();
+				refresh();
+				while (((x < 0 || x > 7) || (y < 0 || y > 7)) || !points_contains(board.points, x, y)) {
+					color_set('r', NULL);
+					mvprintw(20, widthcenter-13, "Please enter a valid coordinate (x and y >= 0 and <= 7)");
+					color_set('w', NULL);
+					move(22, widthcenter-13);
+					clrtoeol();
+					printw("x y: ");
+					scanw("%d %d", &x, &y);
+				}
+			} else if (currentPlayer == COMPUTER) {
+				int randPoint = rand() % numPoints+1;
+				sleep(3);
+				x = board.points[randPoint]->x;
+				y = board.points[randPoint]->y;
+			}	
 			board_add_piece(&board, currentPlayer, x, y);
 			points_reset(board.points);
-			refresh();
 			clear();
+			refresh();
+			mvprintw(24, widthcenter-10, "%s piece added at x: %i, y: %i", currentPlayerName, x, y);	
 		}
 
 		currentPlayer = currentPlayer == PLAYER ? COMPUTER : PLAYER;

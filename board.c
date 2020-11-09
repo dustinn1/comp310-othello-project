@@ -29,7 +29,7 @@ void board_init(board_t *board) {
 }
 
 // print the board with the pieces. Put squares to represent potential spots to place a piece on
-void board_print(board_t *board, char color, int widthcenter) {
+int board_print(board_t *board, char color, int widthcenter) {
 	int height = 6; // y value to print the top of the board 
 	mvprintw(height, widthcenter, "  0 1 2 3 4 5 6 7");
 	height++;
@@ -54,6 +54,7 @@ void board_print(board_t *board, char color, int widthcenter) {
 	// print the list of coordinates of the squares
 	mvprintw(16, widthcenter-12, "Available coordinates: ");
 	points_print(board->points, amount);
+	return amount;
 }
 
 // add a piece to the board only if the position (x,y) is a playable spot to put a piece on
