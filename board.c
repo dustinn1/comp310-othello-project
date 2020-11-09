@@ -25,8 +25,7 @@ void board_init(board_t *board) {
 
 // print the board with the pieces. Put squares to represent potential spots to place a piece on
 void board_print(board_t *board, char color, int widthcenter) {
-	addch(ACS_DIAMOND);
-	int height = 6;
+	int height = 6; // y value to print the top of the board 
 	mvprintw(height, widthcenter, "  0 1 2 3 4 5 6 7");
 	height++;
 	int amount = 0;
@@ -36,11 +35,7 @@ void board_print(board_t *board, char color, int widthcenter) {
 			if (board->pieces[y][x] != NULL) {
 				printw("%c", board->pieces[y][x]->color);
 			} else if (board_can_add_print(board, color, x, y)) {
-				if (color == 'W') {
-					printw("O");
-				} else {
-					printw("O");
-				}
+				addch(ACS_DIAMOND);
 				// add the coordinate to an array
 				board->points[amount] = point_init(x, y);
 				amount++;

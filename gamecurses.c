@@ -10,10 +10,9 @@
 int main(void) {
 	// initialize curses
 	WINDOW* mainwin;
-	int ch;
 
 	if ((mainwin = initscr()) == NULL) {
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	int widthcenter = (getmaxx(mainwin)/2)-20;
 	start_color();
@@ -61,19 +60,18 @@ int main(void) {
 		currentPlayer = currentPlayer == 'B' ? 'W' : 'B';
 		currentPlayerName = currentPlayer == 'B' ? "Black" : "White";
 	}
-
+/*
 	int BPieces = board_count_pieces(&board, 'B');
 	int WPieces = board_count_pieces(&board, 'W');
-/*	
-	board_print(&board, currentPlayer);
-	printf("Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
 
-	printf("========================================");
-	printf("\n\t %s Player Wins \t\n", BPieces > WPieces ? "Black" : "White");
-	printf("========================================\n");
-*/
-	
+	board_print(&board, currentPlayer, widthcenter+3);
+	mvprintw(4, widthcenter-9, "Black: %i pieces, White: %i pieces\n", board_count_pieces(&board, 'B'), board_count_pieces(&board, 'W'));
+	mvprintw(4, widthcenter-9, "\n\t %s Player Wins \t\n", BPieces > WPieces ? "Black" : "White");
+	refresh();
+*/	
 	board_delete(&board);
 
+	endwin();
+	delwin(mainwin);
 	exit(0);
 }
