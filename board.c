@@ -12,6 +12,8 @@
 #define COMPUTER 'C'
 #define COMPUTER_COLOR "blue"
 
+// initialize a piece on the board. Creates a piece with a color and where it should be on the board (x, y)
+// returns piece_t
 piece_t* piece_init(char color, int x, int y)  {
 	piece_t *piece = (piece_t*) malloc(sizeof(piece_t));
 	piece->color = color;
@@ -38,10 +40,10 @@ int board_print(board_t *board, char color, int widthcenter) {
 		mvprintw(height, widthcenter, "%i ", y);
 		for (int x = 0; x < 8; x++) {
 			if (board->pieces[y][x] != NULL) {
-				printw("%c", board->pieces[y][x]->color);
+				printw("%c", board->pieces[y][x]->color); // print the piece if it is on the board
 			} else if (board_can_add_print(board, color, x, y)) {
 				addch(ACS_DIAMOND);
-				// add the coordinate to an array
+				// add the coordinate to an array if it is a possible spot to place a piece on
 				board->points[amount] = point_init(x, y);
 				amount++;
 			} else {
@@ -53,7 +55,7 @@ int board_print(board_t *board, char color, int widthcenter) {
 	}
 	// print the list of coordinates of the squares
 	mvprintw(16, widthcenter-12, "Available coordinates: ");
-	points_print(board->points, amount);
+	points_print(board->points, amount); // list the avaiable coordinates that a player can choose from
 	return amount;
 }
 
@@ -61,8 +63,8 @@ int board_print(board_t *board, char color, int widthcenter) {
 void board_add_piece(board_t *board, char color, int x, int y) {
 	piece_t *new_piece = piece_init(color, x, y);
 	if (board_can_add(board, new_piece)) {
-		board_flip_pieces(board, new_piece);
-		board->pieces[y][x] = new_piece;
+		board_flip_pieces(board, new_piece); // if the piece can be added, then flip the pieces nearby
+		board->pieces[y][x] = new_piece; // add the piece to the board
 	} else {
 		new_piece = (piece_t*) calloc(sizeof(new_piece), sizeof(piece_t));
 		free(new_piece);
@@ -103,7 +105,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	char pieceColor = piece->color;	
-	if (strcmp(direction, "left") == 0) {
+	if (strcmp(direction, "left") == 0) { // if the direction parameter == left, then run this
         	if (pieceX != 0 && board->pieces[pieceY][pieceX-1] != NULL && board->pieces[pieceY][pieceX-1]->color != pieceColor) {	
 			int i = 1;
 			int pieces = 0;
@@ -232,7 +234,7 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 	int pieceX = piece->x;
 	int pieceY = piece->y;
 	char pieceColor = piece->color;
-	int up_amount = board_flip_amount(board, "up", piece);
+	int up_amount = board_flip_amount(board, "up", piece); // get the number of pieces that would get flipped (for all directions)
 	int down_amount = board_flip_amount(board, "down", piece);
 	int left_amount = board_flip_amount(board, "left", piece);
 	int right_amount = board_flip_amount(board, "right", piece);
@@ -240,7 +242,7 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 	int bottomright_amount = board_flip_amount(board, "bottomright", piece);
 	int bottomleft_amount = board_flip_amount(board, "bottomleft", piece);
 	int topleft_amount = board_flip_amount(board, "topleft", piece);
-	if (left_amount > 0) {
+	if (left_amount > 0) { // if the number that will get flipped is > 0, flip those pieces
 		for (int i = 1; i <= left_amount; i++) {
 			board->pieces[pieceY][pieceX-i]->color = pieceColor;
 		}
@@ -282,10 +284,14 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 	}
 }
 
+// copies the board struct pieces array to another board struct
 void board_copy(board_t *board_to, board_t *board_from) {
 	memcpy(board_to->pieces, board_from->pieces, sizeof(board_from->pieces));
 }
 
+// checks if the board is full.
+// return false if there is ever a NULL in the board struct pieces array.
+// return true if not
 bool board_is_full(board_t *board) {
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
@@ -297,6 +303,7 @@ bool board_is_full(board_t *board) {
 	return true;
 }
 
+// count the number of pieces on the board for each color
 int board_count_pieces(board_t *board, char color) {
 	int count = 0;
 	for (int y = 0; y < 8; y++) {
@@ -309,6 +316,7 @@ int board_count_pieces(board_t *board, char color) {
 	return count;
 }
 
+// delete the board and free it from memory
 void board_delete(board_t *board) {
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
