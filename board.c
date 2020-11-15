@@ -86,11 +86,7 @@ bool board_can_add(board_t *board, piece_t *piece) {
 // same as above but will create a temp piece to check
 bool board_can_add_print(board_t *board, char color, int x, int y) {
 	piece_t *piece = piece_init(color, x, y);
-	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
-	bool value = false; 
-	for (int i = 0; i < 8; i++) {	
-		if (board_flip_amount(board, directions[i], piece) > 0) value = true;
-	}
+	bool value = board_can_add(board, piece);
 	piece = (piece_t*) calloc(sizeof(piece), sizeof(piece_t));
 	free(piece);
 	return value;
