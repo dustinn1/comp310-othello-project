@@ -5,7 +5,7 @@
 
 typedef struct _node_t {
 	int depth;
-	board_t* board;
+	board_t board;
 	struct _node_t* children;
 	int numOfChildren;
 	char player;
@@ -14,7 +14,7 @@ typedef struct _node_t {
 
 extern void node_init(node_t *node, board_t *board);
 
-extern void node_add(struct _node_t *node, node_t *parent);
+extern node_t* node_add(node_t *parent, int x, int y);
 
 extern void node_delete(node_t *node);
 
