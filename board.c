@@ -59,6 +59,16 @@ int board_print(board_t *board, char color, int widthcenter) {
 	return amount;
 }
 
+int board_num_points(board_t *board, char color) {
+	int amount = 0;
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board_can_add_print(board, color, x, y)) amount++;
+		}
+	}
+	return amount;
+}
+
 // add a piece to the board only if the position (x,y) is a playable spot to put a piece on
 void board_add_piece(board_t *board, char color, int x, int y) {
 	piece_t *new_piece = piece_init(color, x, y);
@@ -282,7 +292,7 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 
 // copies the board struct pieces array to another board struct
 void board_copy(board_t *board_to, board_t *board_from) {
-	memcpy(board_to->pieces, board_from->pieces, sizeof(board_from->pieces));
+	memcpy(board_to->pieces, board_from->pieces, sizeof(&board_from->pieces));
 }
 
 // checks if the board is full.

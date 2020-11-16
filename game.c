@@ -1,13 +1,12 @@
 #include <curses.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 
 #include "board.h"
 #include "points.h"
+#include "tree.h"
 
 #define PLAYER 'P'
 #define PLAYER_NAME "Player"
@@ -15,6 +14,18 @@
 #define COMPUTER 'C'
 #define COMPUTER_NAME "Computer"
 #define COMPUTER_COLOR "blue"
+/*
+void expand_tree(node_t *node) {
+	if (node->depth != 4) {
+		int numPoints = board_num_points(node->board, node->player);
+		printf("%i", numPoints);
+		for (int i = 0; i < numPoints; i++) {
+			node_t new_node;
+			node_add(&new_node, node);
+			expand_tree(&new_node);
+		}
+	}
+}*/
 
 int main(void) {
 	// initialize curses
@@ -43,8 +54,6 @@ int main(void) {
 		mvprintw(4, widthcenter-9, "%s: %i pieces, %s: %i pieces\n", PLAYER_NAME, board_count_pieces(&board, PLAYER), COMPUTER_NAME, board_count_pieces(&board, COMPUTER));
 		numPoints = board_print(&board, currentPlayer, widthcenter-3);
 
-		srand(time(0));		
-
 		int x, y;
 		if (numPoints > 0) {
 			if (!points_is_empty(board.points)) {
@@ -64,11 +73,10 @@ int main(void) {
 						scanw("%d %d", &x, &y);
 					}
 				} else if (currentPlayer == COMPUTER) {
-					int randPoint = rand() % numPoints;
-					sleep(3);
-					x = board.points[randPoint]->x;
-					y = board.points[randPoint]->y;
-				}	
+					node_t root;
+					node_init(&root, &board);
+		//			expand_tree(&root);
+				}
 				board_add_piece(&board, currentPlayer, x, y);
 				points_reset(board.points);
 				clear();

@@ -12,9 +12,9 @@ typedef struct _node_t {
 	int piecesFlipped;
 } node_t;
 
-extern point_t* node_init(node_t *node, board_t *board);
+extern void node_init(node_t *node, board_t *board);
 
-extern point_t* node_add(node_t *node, node_t *parent);
+extern void node_add(struct _node_t *node, node_t *parent);
 
 extern void node_delete(node_t *node);
 

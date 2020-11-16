@@ -17,7 +17,7 @@ typedef struct _piece_t {
 } piece_t;
 
 typedef struct _board_t {
-	point_t* points[50];
+	point_t* points[20];
 	piece_t* pieces[BOARD_SIZE][BOARD_SIZE];
 } board_t;
 
@@ -26,6 +26,8 @@ extern piece_t* piece_init(char color, int x, int y);
 extern void board_init(board_t *board);
 
 extern int board_print(board_t *board, char color, int widthcenter);
+
+extern int board_num_points(board_t *board, char color);
 
 extern void board_add_piece(board_t *board, char color, int x, int y);
 
