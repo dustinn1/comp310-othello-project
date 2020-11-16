@@ -45,6 +45,8 @@ extern bool board_is_full(board_t *board);
 
 extern int board_count_pieces(board_t *board, char color);
 
+extern void board_reset(board_t *board);
+
 extern void board_delete(board_t *board);
 
 #endif

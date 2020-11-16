@@ -38,20 +38,23 @@ void points_print_old(point_t **points, int amount) {
 	printf("\n\n");
 }
 
-
 void expand_tree(node_t *node) {
         if (node->depth != 4) {
                 int numPoints = board_num_points(node->board, node->player);
 		board_print_old(node->board, node->player);
 		printf("%i\n", numPoints);
 		points_print_old(node->board->points, numPoints);
-		node_t new_node[numPoints];
-                for (int i = 0; i < numPoints; i++) {
-                      	node_add(&new_node[i], node);
-			board_add_piece(new_node[i]->board, node->player, node->board->points[i]->x, node->board->points[i]->y);
-                        board_print_old(new_node[i]->board, new_node[i]->player);
+		node_t new_node;
+                for (int i = 0; i < 1; i++) {
+			//board_reset(new_node.board);
+                      	node_add(&new_node, node);
+			board_add_piece(new_node.board, node->player, node->board->points[i]->x, node->board->points[i]->y);
+                        //board_print_old(new_node.board, new_node.player);
 			//expand_tree(&new_node);
                 }
+		for (int j = 0; j < node->numOfChildren; j++) {
+			board_print_old(node->children[j].board, node->player);
+		}
         }
 }
 

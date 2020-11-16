@@ -329,6 +329,14 @@ int board_count_pieces(board_t *board, char color) {
 	return count;
 }
 
+void board_reset(board_t *board) {
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			board->pieces[y][x] = 0;
+		}
+	}
+}
+
 // delete the board and free it from memory
 void board_delete(board_t *board) {
 	for (int y = 0; y < 8; y++) {
