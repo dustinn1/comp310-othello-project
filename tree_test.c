@@ -30,15 +30,27 @@ void board_print_old(board_t *board, char color) {
 	printf("\n");
 }
 
+void points_print_old(point_t **points, int amount) {
+        for (int i = 0; i < amount; ++i) {
+                printf("%i, %i", points[i]->x, points[i]->y);
+                if (i != amount-1) printf(" | ");
+        }
+	printf("\n\n");
+}
+
+
 void expand_tree(node_t *node) {
         if (node->depth != 4) {
                 int numPoints = board_num_points(node->board, node->player);
 		board_print_old(node->board, node->player);
 		printf("%i\n", numPoints);
+		points_print_old(node->board->points, numPoints);
+		node_t new_node[numPoints];
                 for (int i = 0; i < numPoints; i++) {
-                        node_t new_node;
-                      	node_add(&new_node, node);
-                        expand_tree(&new_node);
+                      	node_add(&new_node[i], node);
+			board_add_piece(new_node[i]->board, node->player, node->board->points[i]->x, node->board->points[i]->y);
+                        board_print_old(new_node[i]->board, new_node[i]->player);
+			//expand_tree(&new_node);
                 }
         }
 }
