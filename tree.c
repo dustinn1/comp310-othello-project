@@ -24,7 +24,7 @@ node_t* node_add(node_t *parent, int x, int y) {
 	node->player = parent->player == 'P' ? 'C' : 'P';
 	//printf("%c\n", node->player);
 	//printf("%i, %i\n", node->board.points[i]->x, node->board.points[i]->y);
-	board_add_piece(&node->board, node->player, x, y);	
+	//board_add_piece(&node->board, node->player, x, y);	
 	parent->children = (node_t*) realloc(parent->children, parent->numOfChildren * sizeof(node_t));
 	//parent->children[parent->numOfChildren-1] = *node;
 	return node;
