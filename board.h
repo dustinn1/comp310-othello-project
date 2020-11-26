@@ -23,9 +23,7 @@ typedef struct _board_t {
 
 extern piece_t* piece_init(char color, int x, int y);
 
-extern void board_init(board_t *board);
-
-extern board_t* board_allocate();
+extern board_t* board_init();
 
 extern int board_print(board_t *board, char color, int widthcenter);
 

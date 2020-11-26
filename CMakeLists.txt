@@ -18,8 +18,8 @@ include_directories(${GTEST_INCLUDE_DIRS})
 add_executable(game game.c board.c points.c)
 target_link_libraries(game ncurses)
 
-add_executable(board_tests board_tests.cc board.c points.c)
-target_link_libraries(board_tests ${GTEST_LIBRARIES} -lpthread ncurses)
+#add_executable(board_tests board_tests.cc board.c points.c)
+#target_link_libraries(board_tests ${GTEST_LIBRARIES} -lpthread ncurses)
 
 add_executable(points_tests points_tests.cc points.c)
 target_link_libraries(points_tests ${GTEST_LIBRARIES} -lpthread ncurses)

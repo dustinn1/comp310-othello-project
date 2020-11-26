@@ -23,15 +23,13 @@ piece_t* piece_init(char color, int x, int y)  {
 }
 
 // initialize the board by adding the 4 pieces in the middle
-void board_init(board_t *board) {
+board_t* board_init() {
+	board_t *board = (board_t*) malloc(sizeof(board_t));
 	board->pieces[3][3] = piece_init(COMPUTER, 3, 3);
 	board->pieces[3][4] = piece_init(PLAYER, 4, 3);
 	board->pieces[4][3] = piece_init(PLAYER, 3, 4);
 	board->pieces[4][4] = piece_init(COMPUTER, 4, 4);
-}
-
-board_t* board_allocate() {
-	return (board_t*) malloc(sizeof(board_t));
+	return board;
 }
 
 // print the board with the pieces. Put squares to represent potential spots to place a piece on

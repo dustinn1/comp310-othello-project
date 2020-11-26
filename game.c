@@ -31,8 +31,7 @@ int main(void) {
 	init_pair('w', COLOR_WHITE, COLOR_BLACK);
 
 	// initialize othello game
-	board_t* board = board_allocate();
-	board_init(board);
+	board_t* board = board_init();
 
 	char currentPlayer = PLAYER;
 	char* currentPlayerName = PLAYER_NAME;
