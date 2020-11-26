@@ -30,6 +30,10 @@ void board_init(board_t *board) {
 	board->pieces[4][4] = piece_init(COMPUTER, 4, 4);
 }
 
+board_t* board_allocate() {
+	return (board_t*) malloc(sizeof(board_t));
+}
+
 // print the board with the pieces. Put squares to represent potential spots to place a piece on
 int board_print(board_t *board, char color, int widthcenter) {
 	int height = 6; // y value to print the top of the board 
