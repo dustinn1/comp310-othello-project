@@ -20,11 +20,11 @@ node_t* node_add(node_t *parent, int x, int y) {
     node->board = board_copy(parent->board);
 	node->depth = parent->depth+1;
 	node->children = malloc(sizeof(node_t*));
-	parent->numOfChildren += 1;
+	node->player = parent->player == 'P' ? 'C' : 'P';
+    
+	board_add_piece(node->board, node->player, x, y);
 
-	//node->player = parent->player == 'P' ? 'C' : 'P';
-	//node->player = parent->player;
-	board_add_piece(node->board, parent->player, x, y);
+    parent->numOfChildren += 1;
     parent->children = realloc(parent->children, parent->numOfChildren * sizeof(node_t*));
     parent->children[parent->numOfChildren-1] = node;
 	return node;

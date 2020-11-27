@@ -38,30 +38,41 @@ void points_print_old(point_t **points, int amount) {
 	printf("\n\n");
 }
 
-void expand_tree(node_t *node) {
-        if (node->depth != 4) {
-            int numPoints = board_num_points(node->board, node->player);
-            printf("%i\n", node->depth);
-            board_print_old(node->board, node->player);
+void expand_tree(node_t *parent_node) {
+        if (parent_node->depth != 4) {
+            int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
+            board_print_old(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
                     
-            points_print_old(node->board->points, numPoints);
-            node_t* new_nodes[numPoints];
+            points_print_old(parent_node->board->points, numPoints);
+            node_t* child_nodes[numPoints];
             for (int i = 0; i < numPoints; i++) {
-                new_nodes[i] = node_add(node, node->board->points[i]->x, node->board->points[i]->y);
+                child_nodes[i] = node_add(parent_node, parent_node->board->points[i]->x, parent_node->board->points[i]->y);
+                //board_add_piece(child_nodes[i]->board, child_nodes[i]->player, parent_node->board->points[i]->x, parent_node->board->points[i]->y);
                 //board_print_old(new_nodes[i]->board, node->player);
                 //expand_tree(new_nodes[i]);
             }
-            for (int j = 0; j < node->numOfChildren; j++) {
-                board_print_old(node->children[j]->board, node->player);
+            for (int j = 0; j < parent_node->numOfChildren; j++) {
+                printf("%i\n", j);
+                board_print_old(parent_node->children[j]->board, parent_node->children[j]->player);
+                board_print_old(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
+                printf("\n\n\n\n");
             }
+            /*
+            for (int k = 2; k > -1; k--) {
+                printf("%i\n", k);
+                board_print_old(node->children[k]->board, node->children[k]->player);
+            } */
         }
 }
 
 int main(void) {
 	board_t* board = board_init();
-	node_t* root = node_init(board);
-    board_add_piece(board, 'P', 3, 2);
+    board_print_old(board, 'P');
+    board_add_piece(board, 'P', 2, 3);
+    node_t* root = node_init(board);
     expand_tree(root);
+
+    //board_print_old(board, 'P');
 
 	return 0;
 }

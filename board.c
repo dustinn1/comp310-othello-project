@@ -71,7 +71,6 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 		new_piece = (piece_t*) calloc(sizeof(new_piece), sizeof(piece_t));
 		free(new_piece);
 	}
-
 }
 
 // check to see if the piece can be added by seeing if placing it will flip any pieces in any direction
@@ -82,7 +81,6 @@ bool board_can_add(board_t *board, piece_t *piece) {
 		if (board_flip_amount(board, directions[i], piece) > 0) return true;
 	}
 	return false;
-
 }
 
 // same as above but will create a temp piece to check
@@ -152,7 +150,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-       	if (strcmp(direction, "down") == 0) {
+	if (strcmp(direction, "down") == 0) {
 		if (pieceY != 7 && board->pieces[pieceY+1][pieceX] != NULL && board->pieces[pieceY+1][pieceX]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -167,8 +165,8 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 
 		}
-	}	
-    	if (strcmp(direction, "topright") == 0) { 
+	}
+	if (strcmp(direction, "topright") == 0) { 
 		if (pieceX != 7 && pieceY != 0 && board->pieces[pieceY-1][pieceX+1] != NULL && board->pieces[pieceY-1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -183,7 +181,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-    	if (strcmp(direction, "bottomright") == 0) {
+	if (strcmp(direction, "bottomright") == 0) {
 		if (pieceX != 7 && pieceY != 7 && board->pieces[pieceY+1][pieceX+1] != NULL && board->pieces[pieceY+1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -213,7 +211,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-    	if (strcmp(direction, "topleft") == 0) {
+	if (strcmp(direction, "topleft") == 0) {
 		if (pieceX != 0 && pieceY != 0 && board->pieces[pieceY-1][pieceX-1] != NULL && board->pieces[pieceY-1][pieceX-1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -289,14 +287,7 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 // copies the board struct pieces array to another board struct
 board_t* board_copy(board_t *board_from) {
 	board_t* new_board = (board_t*) malloc(sizeof(board_t));
-	/*
-	for (int y = 0; y < 8; y++) {
-		for (int x = 0; x < 8; x++) {
-			int from_int = board_from->pieces[y][x];
-			new_board->pieces[y][x] = from_int;
-		}
-	}*/
-	memcpy(new_board->pieces, board_from->pieces, sizeof(board_from->pieces) * sizeof(int));
+	memcpy(&new_board->pieces, &board_from->pieces, sizeof(board_from->pieces));
 	return new_board;
 }
 
