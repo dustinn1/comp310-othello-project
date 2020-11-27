@@ -37,9 +37,11 @@ extern int board_flip_amount(board_t *board, char* direction, piece_t *piece);
 
 extern void board_flip_pieces(board_t *board, piece_t *piece);
 
-extern void board_copy(board_t *board_to, board_t *board_from);
+extern board_t* board_copy(board_t *board_from);
 
 extern bool board_is_full(board_t *board);
+
+extern int board_num_points(board_t *board, char color);
 
 extern int board_count_pieces(board_t *board, char color);
 

@@ -287,8 +287,14 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 }
 
 // copies the board struct pieces array to another board struct
-void board_copy(board_t *board_to, board_t *board_from) {
-	memcpy(board_to->pieces, board_from->pieces, sizeof(board_from->pieces));
+board_t* board_copy(board_t *board_from) {
+	board_t* new_board = (board_t*) malloc(sizeof(board_t));
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			new_board->pieces[y][x] = board_from->pieces[y][x];
+		}
+	}
+	return new_board;
 }
 
 // checks if the board is full.
@@ -303,6 +309,19 @@ bool board_is_full(board_t *board) {
 		}
 	}
 	return true;
+}
+
+int board_num_points(board_t *board, char color) {
+	int amount = 0;
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board_can_add_print(board, color, x, y)) { 
+				board->points[amount] = point_init(x, y);
+				amount++;
+			}
+		}
+	}
+	return amount;
 }
 
 // count the number of pieces on the board for each color
