@@ -24,6 +24,10 @@ node_t* node_add(node_t *parent, int x, int y) {
     
 	board_add_piece(node->board, node->player, x, y);
 
+	node->pieceAdded.x = x;
+	node->pieceAdded.y = y;
+	node->pieceAdded.color = node->player;
+
     parent->numOfChildren += 1;
     parent->children = realloc(parent->children, parent->numOfChildren * sizeof(node_t*));
     parent->children[parent->numOfChildren-1] = node;

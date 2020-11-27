@@ -287,7 +287,13 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 // copies the board struct pieces array to another board struct
 board_t* board_copy(board_t *board_from) {
 	board_t* new_board = (board_t*) malloc(sizeof(board_t));
-	memcpy(&new_board->pieces, &board_from->pieces, sizeof(board_from->pieces));
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board_from->pieces[y][x] != NULL) {
+				new_board->pieces[y][x] = piece_init(board_from->pieces[y][x]->color, x, y);
+			}
+		}
+	}
 	return new_board;
 }
 

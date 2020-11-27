@@ -9,6 +9,7 @@ typedef struct _node_t {
 	int numOfChildren;
 	char player;
 	int piecesFlipped;
+	piece_t pieceAdded;
     struct _node_t* *children;
 } node_t;
 
