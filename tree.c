@@ -22,12 +22,11 @@ node_t* node_add(node_t *parent, int x, int y) {
 	node->children = malloc(sizeof(node_t*));
 	parent->numOfChildren += 1;
 
-	node->player = parent->player == 'P' ? 'C' : 'P';
-	//printf("%c\n", node->player);
-	//printf("%i, %i\n", node->board.points[i]->x, node->board.points[i]->y);
-	board_add_piece(node->board, node->player, x, y);	
-	parent->children = realloc(parent->children, parent->numOfChildren * sizeof(node_t*));
-	parent->children[parent->numOfChildren-1] = node;
+	//node->player = parent->player == 'P' ? 'C' : 'P';
+	//node->player = parent->player;
+	board_add_piece(node->board, parent->player, x, y);
+    parent->children = realloc(parent->children, parent->numOfChildren * sizeof(node_t*));
+    parent->children[parent->numOfChildren-1] = node;
 	return node;
 }
 
