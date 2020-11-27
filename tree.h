@@ -4,15 +4,16 @@
 #include "board.h"
 
 typedef struct _node_t {
+  board_t* board;
 	int depth;
-	board_t board;
-	struct _node_t* children;
 	int numOfChildren;
 	char player;
 	int piecesFlipped;
+	piece_t pieceAdded;
+    struct _node_t* *children;
 } node_t;
 
-extern void node_init(node_t *node, board_t *board);
+extern node_t* node_init(board_t *board);
 
 extern node_t* node_add(node_t *parent, int x, int y);
 

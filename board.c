@@ -23,11 +23,13 @@ piece_t* piece_init(char color, int x, int y)  {
 }
 
 // initialize the board by adding the 4 pieces in the middle
-void board_init(board_t *board) {
+board_t* board_init() {
+	board_t *board = (board_t*) malloc(sizeof(board_t));
 	board->pieces[3][3] = piece_init(COMPUTER, 3, 3);
 	board->pieces[3][4] = piece_init(PLAYER, 4, 3);
 	board->pieces[4][3] = piece_init(PLAYER, 3, 4);
 	board->pieces[4][4] = piece_init(COMPUTER, 4, 4);
+	return board;
 }
 
 // print the board with the pieces. Put squares to represent potential spots to place a piece on
@@ -82,7 +84,6 @@ void board_add_piece(board_t *board, char color, int x, int y) {
 		new_piece = (piece_t*) calloc(sizeof(new_piece), sizeof(piece_t));
 		free(new_piece);
 	}
-
 }
 
 // check to see if the piece can be added by seeing if placing it will flip any pieces in any direction
@@ -93,7 +94,6 @@ bool board_can_add(board_t *board, piece_t *piece) {
 		if (board_flip_amount(board, directions[i], piece) > 0) return true;
 	}
 	return false;
-
 }
 
 // same as above but will create a temp piece to check
@@ -159,7 +159,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-       	if (strcmp(direction, "down") == 0) {
+	if (strcmp(direction, "down") == 0) {
 		if (pieceY != 7 && board->pieces[pieceY+1][pieceX] != NULL && board->pieces[pieceY+1][pieceX]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -174,8 +174,8 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 
 		}
-	}	
-    	if (strcmp(direction, "topright") == 0) { 
+	}
+	if (strcmp(direction, "topright") == 0) { 
 		if (pieceX != 7 && pieceY != 0 && board->pieces[pieceY-1][pieceX+1] != NULL && board->pieces[pieceY-1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -190,7 +190,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-    	if (strcmp(direction, "bottomright") == 0) {
+	if (strcmp(direction, "bottomright") == 0) {
 		if (pieceX != 7 && pieceY != 7 && board->pieces[pieceY+1][pieceX+1] != NULL && board->pieces[pieceY+1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -220,7 +220,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			return 0;
 		}
 	}
-    	if (strcmp(direction, "topleft") == 0) {
+	if (strcmp(direction, "topleft") == 0) {
 		if (pieceX != 0 && pieceY != 0 && board->pieces[pieceY-1][pieceX-1] != NULL && board->pieces[pieceY-1][pieceX-1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
@@ -294,12 +294,16 @@ void board_flip_pieces(board_t *board, piece_t *piece) {
 }
 
 // copies the board struct pieces array to another board struct
-void board_copy(board_t *board_to, board_t *board_from) {
+board_t* board_copy(board_t *board_from) {
+	board_t* new_board = (board_t*) malloc(sizeof(board_t));
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
-			board_to->pieces[y][x] = board_from->pieces[y][x];
+			if (board_from->pieces[y][x] != NULL) {
+				new_board->pieces[y][x] = piece_init(board_from->pieces[y][x]->color, x, y);
+			}
 		}
 	}
+	return new_board;
 }
 
 // checks if the board is full.
@@ -314,6 +318,19 @@ bool board_is_full(board_t *board) {
 		}
 	}
 	return true;
+}
+
+int board_num_points(board_t *board, char color) {
+	int amount = 0;
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board_can_add_print(board, color, x, y)) { 
+				board->points[amount] = point_init(x, y);
+				amount++;
+			}
+		}
+	}
+	return amount;
 }
 
 // count the number of pieces on the board for each color
