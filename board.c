@@ -61,6 +61,19 @@ int board_print(board_t *board, char color, int widthcenter) {
 	return amount;
 }
 
+int board_num_points(board_t *board, char color) {
+	int amount = 0;
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			if (board_can_add_print(board, color, x, y)) { 
+				board->points[amount] = point_init(x, y);
+				amount++;
+			}
+		}
+	}
+	return amount;
+}
+
 // add a piece to the board only if the position (x,y) is a playable spot to put a piece on
 void board_add_piece(board_t *board, char color, int x, int y) {
 	piece_t *new_piece = piece_init(color, x, y);
@@ -86,11 +99,7 @@ bool board_can_add(board_t *board, piece_t *piece) {
 // same as above but will create a temp piece to check
 bool board_can_add_print(board_t *board, char color, int x, int y) {
 	piece_t *piece = piece_init(color, x, y);
-	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
-	bool value = false; 
-	for (int i = 0; i < 8; i++) {	
-		if (board_flip_amount(board, directions[i], piece) > 0) value = true;
-	}
+	bool value = board_can_add(board, piece);
 	piece = (piece_t*) calloc(sizeof(piece), sizeof(piece_t));
 	free(piece);
 	return value;
@@ -335,6 +344,14 @@ int board_count_pieces(board_t *board, char color) {
 		}
 	}
 	return count;
+}
+
+void board_reset(board_t *board) {
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			board->pieces[y][x] = 0;
+		}
+	}
 }
 
 // delete the board and free it from memory
