@@ -4,7 +4,7 @@
 #include "board.h"
 
 typedef struct _node_t {
-  board_t* board;
+    board_t* board;
 	int depth;
 	int numOfChildren;
 	char player;

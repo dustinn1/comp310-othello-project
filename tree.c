@@ -17,7 +17,7 @@ node_t* node_init(board_t *board) {
 
 node_t* node_add(node_t *parent, int x, int y) {
 	node_t* node = (node_t*) malloc(sizeof(node_t));
-  node->board = board_copy(parent->board);
+    node->board = board_copy(parent->board);
 	node->depth = parent->depth+1;
 	node->children = malloc(sizeof(node_t*));
 	node->player = parent->player == 'P' ? 'C' : 'P';

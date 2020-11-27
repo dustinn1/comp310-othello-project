@@ -27,8 +27,6 @@ extern board_t* board_init();
 
 extern int board_print(board_t *board, char color, int widthcenter);
 
-extern int board_num_points(board_t *board, char color);
-
 extern void board_add_piece(board_t *board, char color, int x, int y);
 
 extern bool board_can_add(board_t *board, piece_t *piece);
@@ -46,8 +44,6 @@ extern bool board_is_full(board_t *board);
 extern int board_num_points(board_t *board, char color);
 
 extern int board_count_pieces(board_t *board, char color);
-
-extern void board_reset(board_t *board);
 
 extern void board_delete(board_t *board);
 
