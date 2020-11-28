@@ -12,6 +12,11 @@ node_t* node_init(board_t *board) {
 	node->player = 'P';
 	node->piecesFlipped = 0;
     node->children = malloc(sizeof(node_t*));
+
+	node->pieceAdded.x = 0;
+	node->pieceAdded.y = 0;
+	node->pieceAdded.color = node->player;
+
     return node;
 }
 
