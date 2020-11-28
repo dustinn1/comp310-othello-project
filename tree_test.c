@@ -46,9 +46,7 @@ void points_print_old(point_t **points, int amount) {
 
 void expand_tree(node_t *parent_node) {
     if (parent_node->depth != 3) {
-        char oppositePlayer = parent_node->player == 'P' ? 'C' : 'P';
-        int numPoints = board_num_points(parent_node->board, oppositePlayer);
-
+        int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
         node_t* child_nodes[numPoints];
         for (int i = 0; i < numPoints; i++) {
             child_nodes[i] = node_add(parent_node, parent_node->board->points[i]->x, parent_node->board->points[i]->y);

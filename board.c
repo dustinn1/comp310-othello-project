@@ -315,7 +315,7 @@ int board_num_points(board_t *board, char color) {
 	int amount = 0;
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
-			if (board_can_add_print(board, color, x, y)) { 
+			if (board->pieces[y][x] == NULL && board_can_add_print(board, color, x, y)) { 
 				board->points[amount] = point_init(x, y);
 				amount++;
 			}
