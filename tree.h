@@ -19,4 +19,6 @@ extern node_t* node_add(node_t *parent, int x, int y);
 
 extern void node_delete(node_t *node);
 
+extern void tree_create(node_t *parent_node);
+
 #endif

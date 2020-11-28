@@ -43,3 +43,14 @@ void node_delete(node_t *node) {
 	node = calloc(1, sizeof(node_t));
 	free(node);
 }
+
+void tree_create(node_t *parent_node) {
+    if (parent_node->depth != 3) {
+        int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
+        node_t* child_nodes[numPoints];
+        for (int i = 0; i < numPoints; i++) {
+            child_nodes[i] = node_add(parent_node, parent_node->board->points[i]->x, parent_node->board->points[i]->y);
+            tree_create(child_nodes[i]);
+        }
+    }
+}
