@@ -13,9 +13,8 @@ node_t* node_init(board_t *board) {
 	node->piecesFlipped = 0;
     node->children = malloc(sizeof(node_t*));
 
-	node->pieceAdded.x = 0;
-	node->pieceAdded.y = 0;
-	node->pieceAdded.color = node->player;
+	node->recentPieceAdded.x = 0;
+	node->recentPieceAdded.y = 0;
 
     return node;
 }
@@ -26,12 +25,20 @@ node_t* node_add(node_t *parent, int x, int y) {
 	node->depth = parent->depth+1;
 	node->children = malloc(sizeof(node_t*));
 	node->player = parent->player == 'P' ? 'C' : 'P';
-    
+
+    node->piecesFlipped = board_amount_flipped(node->board, node->player, x, y);
 	board_add_piece(node->board, node->player, x, y);
 
-	node->pieceAdded.x = x;
-	node->pieceAdded.y = y;
-	node->pieceAdded.color = node->player;
+	node->recentPieceAdded.x = x;
+	node->recentPieceAdded.y = y;
+
+	if (node->depth == 1) {
+		node->firstPieceAdded.x = x;
+		node->firstPieceAdded.y = y;
+	} else {
+		node->firstPieceAdded.x = parent->firstPieceAdded.x;
+		node->firstPieceAdded.y = parent->firstPieceAdded.y;
+	}
 
     parent->numOfChildren += 1;
     parent->children = realloc(parent->children, parent->numOfChildren * sizeof(node_t*));

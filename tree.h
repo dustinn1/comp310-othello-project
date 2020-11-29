@@ -9,7 +9,7 @@ typedef struct _node_t {
 	int numOfChildren;
 	char player;
 	int piecesFlipped;
-	piece_t pieceAdded;
+	point_t recentPieceAdded, firstPieceAdded;
     struct _node_t* *children;
 } node_t;
 

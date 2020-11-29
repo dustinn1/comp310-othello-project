@@ -324,6 +324,18 @@ int board_num_points(board_t *board, char color) {
 	return amount;
 }
 
+int board_amount_flipped(board_t *board, char color, int x, int y) {
+	piece_t *piece = piece_init(color, x, y);
+	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
+	int amount = 0; 
+	for (int i = 0; i < 8; i++) {
+		amount += board_flip_amount(board, directions[i], piece);
+	}
+	piece = (piece_t*) calloc(sizeof(piece), sizeof(piece_t));
+	free(piece);
+	return amount;
+}
+
 // count the number of pieces on the board for each color
 int board_count_pieces(board_t *board, char color) {
 	int count = 0;

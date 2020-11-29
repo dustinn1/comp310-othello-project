@@ -43,6 +43,8 @@ extern bool board_is_full(board_t *board);
 
 extern int board_num_points(board_t *board, char color);
 
+extern int board_amount_flipped(board_t *board, char color, int x, int y);
+
 extern int board_count_pieces(board_t *board, char color);
 
 extern void board_delete(board_t *board);

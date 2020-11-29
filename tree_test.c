@@ -45,14 +45,15 @@ void points_print_old(point_t **points, int amount) {
 }
 
 void print_tree(node_t *node) {
-    if (node->pieceAdded.x == 0 && node->pieceAdded.y == 0) {
+    if (node->recentPieceAdded.x == 0 && node->recentPieceAdded.y == 0) {
         printf("\troot\n");
         //board_print_old(node->board, node->player, node->depth);
     } else {
         for (int i = 0; i <= node->depth; i++) {
             printf("\t");
         }
-        printf("%i, %i\n\n", node->pieceAdded.x, node->pieceAdded.y);
+        printf("Added: %i, %i (First: %i, %i) Flipped %i\n\n", 
+            node->recentPieceAdded.x, node->recentPieceAdded.y, node->firstPieceAdded.x, node->firstPieceAdded.y, node->piecesFlipped);
         //board_print_old(node->board, node->player, node->depth);
     }
     for (int i = 0; i < node->numOfChildren; i++) {
