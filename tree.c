@@ -11,6 +11,7 @@ node_t* node_init(board_t *board) {
 	node->numOfChildren = 0;
 	node->player = 'P';
 	node->piecesFlipped = 0;
+    node->value = 0;
     node->children = malloc(sizeof(node_t*));
 
 	node->recentPieceAdded.x = 0;
@@ -40,10 +41,13 @@ node_t* node_add(node_t *parent, int x, int y) {
 		node->firstPieceAdded.y = parent->firstPieceAdded.y;
 	}
 
-    parent->numOfChildren += 1;
-    parent->children = realloc(parent->children, parent->numOfChildren * sizeof(node_t*));
-    parent->children[parent->numOfChildren-1] = node;
+    node_calculate_value(node, parent->value, board_num_points(node->board, parent->player));
 	return node;
+}
+
+void node_children_allocate(node_t *node, int size) {
+    node->numOfChildren = size;
+    node->children = malloc(size * sizeof(node_t*));
 }
 
 void node_delete(node_t *node) {
@@ -51,12 +55,29 @@ void node_delete(node_t *node) {
 	free(node);
 }
 
+void node_calculate_value(node_t *node, int parent_value, int numOfChildren) {
+    node->test = numOfChildren;
+
+    if (node->depth == 1) {
+        node->value = node->piecesFlipped + numOfChildren;
+    } else {
+        if (node->player == 'C') {
+            node->value = parent_value + (node->piecesFlipped + numOfChildren);
+        } else if (node->player == 'P') {
+            node->value = parent_value - (node->piecesFlipped + numOfChildren);
+        }
+    }
+    //if (node->depth == 4)
+}
+
 void tree_create(node_t *parent_node) {
-    if (parent_node->depth != 3) {
+    if (parent_node->depth != 4) {
         int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
+        node_children_allocate(parent_node, numPoints);
         node_t* child_nodes[numPoints];
         for (int i = 0; i < numPoints; i++) {
             child_nodes[i] = node_add(parent_node, parent_node->board->points[i]->x, parent_node->board->points[i]->y);
+            parent_node->children[i] = child_nodes[i];
             tree_create(child_nodes[i]);
         }
     }

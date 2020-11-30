@@ -36,14 +36,6 @@ void board_print_old(board_t *board, char color, int depth) {
 	printf("\n\n");
 }
 
-void points_print_old(point_t **points, int amount) {
-        for (int i = 0; i < amount; ++i) {
-            printf("%i, %i", points[i]->x, points[i]->y);
-            if (i != amount-1) printf(" | ");
-        }
-	printf("\n\n");
-}
-
 void print_tree(node_t *node) {
     if (node->recentPieceAdded.x == 0 && node->recentPieceAdded.y == 0) {
         printf("\troot\n");
@@ -52,9 +44,10 @@ void print_tree(node_t *node) {
         for (int i = 0; i <= node->depth; i++) {
             printf("\t");
         }
-        printf("Added: %i, %i (First: %i, %i) Flipped %i\n\n", 
-            node->recentPieceAdded.x, node->recentPieceAdded.y, node->firstPieceAdded.x, node->firstPieceAdded.y, node->piecesFlipped);
-        //board_print_old(node->board, node->player, node->depth);
+        printf("%c Added: %i, %i (First: %i, %i) Flipped %i, num of children %i, value %i\n\n", 
+            node->player, node->recentPieceAdded.x, node->recentPieceAdded.y, node->firstPieceAdded.x, node->firstPieceAdded.y, node->piecesFlipped, node->test,
+            node->value);
+        //board_print_old(node->board, node->player == 'P' ? 'C' : 'P', node->depth);
     }
     for (int i = 0; i < node->numOfChildren; i++) {
         print_tree(node->children[i]);
