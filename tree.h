@@ -31,5 +31,6 @@ extern void node_calculate_value(node_t *node, int parent_value, int numOfChildr
 
 extern void tree_create(node_t *parent_node);
 
+extern node_t* tree_get_max(node_t *node);
 
 #endif
