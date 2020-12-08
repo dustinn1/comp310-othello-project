@@ -94,7 +94,10 @@ node_t* tree_get_max(node_t *node) {
             if (max == NULL || temp->value > max->value) {
                 max = temp;
             }
+
         }
+        free(node->children[i]);
+        node->children[i] = calloc(sizeof(node->children[i]), sizeof(node_t*));
     }
     return max;
 }

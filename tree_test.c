@@ -60,8 +60,12 @@ int main(void) {
     board_add_piece(board, 'P', 2, 3);
     node_t* root = node_init(board);
     tree_create(root);
-    node_t* thing = tree_get_max(root);
-    printf("%i, %i, value: %i\n", thing->firstPieceAdded.x, thing->firstPieceAdded.y, thing->value);
     print_tree(root);
+
+    node_t* max = tree_get_max(root);
+    printf("%i, %i, value: %i\n", max->firstPieceAdded.x, max->firstPieceAdded.y, max->value);
+
+    free(root);
+    root = calloc(sizeof(root), sizeof(node_t*));
 	return 0;
 }
