@@ -70,7 +70,7 @@ void node_calculate_value(node_t *node, int parent_value, int numOfChildren) {
 }
 
 void tree_create(node_t *parent_node) {
-    if (parent_node->depth < 4) {
+    if (parent_node->depth < 3) {
         int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
         node_children_allocate(parent_node, numPoints);
         node_t* child_nodes[numPoints];
@@ -85,14 +85,18 @@ void tree_create(node_t *parent_node) {
 node_t* tree_get_max(node_t *node) {
     node_t* max = (node_t*) malloc(sizeof(node_t));
     for (int i = 0; i < node->numOfChildren; i++) {
-        if (node->depth == 3) {
+        if (node->depth == 2) {
             if (max == NULL || node->children[i]->value >= max->value) {
-                max = node->children[i];
+                max->firstPieceAdded.x = node->children[i]->firstPieceAdded.x;
+                max->firstPieceAdded.y = node->children[i]->firstPieceAdded.y;
+                max->value = node->children[i]->value;
             }
-        } else if (node->depth < 3) {
+        } else if (node->depth < 2) {
             node_t* temp = tree_get_max(node->children[i]);
             if (max == NULL || temp->value > max->value) {
-                max = temp;
+                max->firstPieceAdded.x = temp->firstPieceAdded.x;
+                max->firstPieceAdded.y = temp->firstPieceAdded.y;
+                max->value = temp->value;
             }
 
         }

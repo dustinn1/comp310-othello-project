@@ -67,5 +67,7 @@ int main(void) {
 
     free(root);
     root = calloc(sizeof(root), sizeof(node_t*));
+    free(max);
+    max = calloc(sizeof(max), sizeof(node_t*));
 	return 0;
 }
