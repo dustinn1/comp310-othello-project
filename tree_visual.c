@@ -62,12 +62,12 @@ int main(void) {
     tree_create(root);
     print_tree(root);
 
-    node_t* max = tree_get_max(root);
-    printf("%i, %i, value: %i\n", max->firstPieceAdded.x, max->firstPieceAdded.y, max->value);
+    //node_t* max = tree_get_max(root);
+    //printf("%i, %i, value: %i\n", max->firstPieceAdded.x, max->firstPieceAdded.y, max->value);
 
     free(root);
     root = calloc(sizeof(root), sizeof(node_t*));
-    free(max);
-    max = calloc(sizeof(max), sizeof(node_t*));
+    //free(max);
+    //max = calloc(sizeof(max), sizeof(node_t*));
 	return 0;
 }

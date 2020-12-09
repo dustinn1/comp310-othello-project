@@ -124,7 +124,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 		if (pieceX != 7 && board->pieces[pieceY][pieceX+1] != NULL && board->pieces[pieceY][pieceX+1]->color != pieceColor) {	
 			int i = 1;
 			int pieces = 0;
-			while (pieceX+i < 8) {
+			while (pieceX+i < 7) {
 				i++;
 				if (board->pieces[pieceY][pieceX+i] == NULL) break;
 				pieces++;
@@ -154,7 +154,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 		if (pieceY != 7 && board->pieces[pieceY+1][pieceX] != NULL && board->pieces[pieceY+1][pieceX]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
-			while (pieceY+i < 8) {
+			while (pieceY+i < 7) {
 				i++;
 				if (board->pieces[pieceY+i][pieceX] == NULL) break;
 				pieces++;
@@ -163,14 +163,13 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 				}
 			}
 			return 0;
-
 		}
 	}
 	if (strcmp(direction, "topright") == 0) { 
 		if (pieceX != 7 && pieceY != 0 && board->pieces[pieceY-1][pieceX+1] != NULL && board->pieces[pieceY-1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
-			while (pieceY-i > -1 || pieceX+i < 8) {
+			while (pieceY-i > -1 && pieceX+i < 7) {
 				i++;
 				if (board->pieces[pieceY-i][pieceX+i] == NULL) break;
 				pieces++;
@@ -185,7 +184,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 		if (pieceX != 7 && pieceY != 7 && board->pieces[pieceY+1][pieceX+1] != NULL && board->pieces[pieceY+1][pieceX+1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
-			while (pieceY+i < 8 || pieceX+i < 8) {
+			while (pieceY+i < 7 && pieceX+i < 7) {
 				i++;
 				if (board->pieces[pieceY+i][pieceX+i] == NULL) break;
 				pieces++;
@@ -198,9 +197,9 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 	}
  	if (strcmp(direction, "bottomleft") == 0) {
 		if (pieceX != 0 && pieceY != 7 && board->pieces[pieceY+1][pieceX-1] != NULL && board->pieces[pieceY+1][pieceX-1]->color != pieceColor) {
-			int i = 1;;
+			int i = 1;
 			int pieces = 0;
-			while (pieceY+i < 8 || pieceX-i > -1) {
+			while (pieceY+i < 7 && pieceX-i > -1) {
 				i++;
 				if (board->pieces[pieceY+i][pieceX-i] == NULL) break;
 				pieces++;
@@ -215,7 +214,7 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 		if (pieceX != 0 && pieceY != 0 && board->pieces[pieceY-1][pieceX-1] != NULL && board->pieces[pieceY-1][pieceX-1]->color != pieceColor) {
 			int i = 1;
 			int pieces = 0;
-			while (pieceY-i > -1 || pieceX-i > -1) {
+			while (pieceY-i > -1 && pieceX-i > -1) {
 				i++;
 				if (board->pieces[pieceY-i][pieceX-i] == NULL) break;
 				pieces++;

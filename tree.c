@@ -70,7 +70,7 @@ void node_calculate_value(node_t *node, int parent_value, int numOfChildren) {
 }
 
 void tree_create(node_t *parent_node) {
-    if (parent_node->depth < 3) {
+    if (parent_node->depth < 5) {
         int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
         node_children_allocate(parent_node, numPoints);
         node_t* child_nodes[numPoints];
@@ -102,7 +102,6 @@ node_t* tree_get_max(node_t *node) {
                     temp = calloc(sizeof(temp), sizeof(node_t*));
                 }
             }
-
         }
         free(node->children[i]);
         node->children[i] = calloc(sizeof(node->children[i]), sizeof(node_t*));
