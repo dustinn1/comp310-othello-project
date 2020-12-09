@@ -93,10 +93,14 @@ node_t* tree_get_max(node_t *node) {
             }
         } else if (node->depth < 2) {
             node_t* temp = tree_get_max(node->children[i]);
-            if (max == NULL || temp->value > max->value) {
+            if (temp->value > max->value) {
                 max->firstPieceAdded.x = temp->firstPieceAdded.x;
                 max->firstPieceAdded.y = temp->firstPieceAdded.y;
                 max->value = temp->value;
+                if (i == 0) {
+                    free(temp);
+                    temp = calloc(sizeof(temp), sizeof(node_t*));
+                }
             }
 
         }

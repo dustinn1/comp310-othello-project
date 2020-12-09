@@ -14,11 +14,6 @@ typedef struct _node_t {
 	int test;
 } node_t;
 
-typedef struct _thing_t {
-	point_t piece;
-	int value;
-} thing_t;
-
 extern node_t* node_init(board_t *board);
 
 extern node_t* node_add(node_t *parent, int x, int y);

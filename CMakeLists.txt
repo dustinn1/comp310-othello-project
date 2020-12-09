@@ -24,5 +24,5 @@ target_link_libraries(game ncurses)
 add_executable(points_tests points_tests.cc points.c)
 target_link_libraries(points_tests ${GTEST_LIBRARIES} -lpthread ncurses)
 
-add_executable(tree_test tree_test.c board.c points.c tree.c)
-target_link_libraries(tree_test ncurses)
+add_executable(tree_visual tree_visual.c board.c points.c tree.c)
+target_link_libraries(tree_visual ncurses)
