@@ -56,8 +56,6 @@ void node_delete(node_t *node) {
 }
 
 void node_calculate_value(node_t *node, int parent_value, int numOfChildren) {
-    node->test = numOfChildren;
-
     if (node->depth == 1) {
         node->value = node->piecesFlipped + numOfChildren;
     } else {

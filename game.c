@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 
 #include "board.h"
 #include "points.h"
@@ -15,7 +14,7 @@
 #define COMPUTER 'C'
 #define COMPUTER_NAME "Computer"
 
-int main(void) {
+int main(int argc, char *argv[]) {
 	// initialize curses
 	WINDOW* mainwin;
 

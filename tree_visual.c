@@ -44,8 +44,8 @@ void print_tree(node_t *node) {
         for (int i = 0; i <= node->depth; i++) {
             printf("\t");
         }
-        printf("%c Depth %i Added: %i, %i (First: %i, %i) Flipped %i, num of children %i, value %i\n\n", 
-            node->player, node->depth, node->recentPieceAdded.x, node->recentPieceAdded.y, node->firstPieceAdded.x, node->firstPieceAdded.y, node->piecesFlipped, node->test,
+        printf("%c Depth %i Added: %i, %i (First: %i, %i) Flipped %i, value %i\n\n", 
+            node->player, node->depth, node->recentPieceAdded.x, node->recentPieceAdded.y, node->firstPieceAdded.x, node->firstPieceAdded.y, node->piecesFlipped,
             node->value);
         //board_print_old(node->board, node->player == 'P' ? 'C' : 'P', node->depth);
     }
@@ -60,14 +60,14 @@ int main(void) {
     board_add_piece(board, 'P', 2, 3);
     node_t* root = node_init(board);
     tree_create(root);
-    print_tree(root);
+    //print_tree(root);
 
-    //node_t* max = tree_get_max(root);
-    //printf("%i, %i, value: %i\n", max->firstPieceAdded.x, max->firstPieceAdded.y, max->value);
+    node_t* max = tree_get_max(root);
+    printf("%i, %i, value: %i\n", max->firstPieceAdded.x, max->firstPieceAdded.y, max->value);
 
     free(root);
     root = calloc(sizeof(root), sizeof(node_t*));
-    //free(max);
-    //max = calloc(sizeof(max), sizeof(node_t*));
+    free(max);
+    max = calloc(sizeof(max), sizeof(node_t*));
 	return 0;
 }
