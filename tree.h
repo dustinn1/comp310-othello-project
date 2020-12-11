@@ -25,10 +25,10 @@ extern void node_delete(node_t *node);
 
 extern void node_calculate_value(node_t *node, int parent_value, int numOfChildren);
 
-extern void tree_create(node_t *parent_node);
+extern void tree_create(node_t *parent_node, int depth);
 
 extern void tree_init();
 
-extern node_t* tree_get_max(node_t *node);
+extern node_t* tree_get_max(node_t *node, int depth);
 
 #endif

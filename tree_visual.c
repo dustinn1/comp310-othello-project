@@ -59,10 +59,10 @@ int main(void) {
     //board_print_old(board, 'P', 0);
     board_add_piece(board, 'P', 2, 3);
     node_t* root = node_init(board);
-    tree_create(root);
+    tree_create(root, 5);
     //print_tree(root);
 
-    node_t* max = tree_get_max(root);
+    node_t* max = tree_get_max(root, 5);
     printf("%i, %i, value: %i\n", max->firstPieceAdded.x, max->firstPieceAdded.y, max->value);
 
     free(root);

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <getopt.h>
 
 #include "board.h"
 #include "points.h"
@@ -15,6 +16,50 @@
 #define COMPUTER_NAME "Computer"
 
 int main(int argc, char *argv[]) {
+	int difficulty;
+
+	if (argc == 1) {
+		difficulty = 2;
+	} else {
+		int c;
+		int digit_optind = 0;
+
+		while (1) {
+			int this_option_optind = optind ? optind : 1;
+			int option_index = 0;
+			static struct option long_options[] = {
+				{"difficulty", required_argument, 0, 'd' },
+				{0,            0,                 0,  0 }
+			};
+			c = getopt_long(argc, argv, "abc:d:012", long_options, &option_index);
+			if (c == -1) break;
+			switch (c) {
+				case 'd': {
+						int argint = atoi(optarg);
+						if (argint > 0 && argint < 4) {
+							difficulty = argint;
+							break;
+						} else {
+							printf("Difficulty must be 0, 1, or 2\n");
+							exit(EXIT_FAILURE);
+						}
+					}
+				default:
+					exit(EXIT_FAILURE);
+			}
+		}
+	}
+
+	int depth;
+	switch (difficulty) {
+		case 1:
+			depth = 3;
+		case 2:
+			depth = 4;
+		case 3:
+			depth = 5;
+	}
+
 	// initialize curses
 	WINDOW* mainwin;
 
@@ -36,6 +81,7 @@ int main(int argc, char *argv[]) {
 
 	while (!board_is_full(board)) {
 		int numPoints;
+		mvprintw(0, widthcenter, "Difficulty %i", difficulty);
 		mvprintw(2, widthcenter, "%s's turn", currentPlayerName);
 		mvprintw(4, widthcenter-9, "%s: %i pieces, %s: %i pieces\n", PLAYER_NAME, board_count_pieces(board, PLAYER), COMPUTER_NAME, board_count_pieces(board, COMPUTER));
 		numPoints = board_print(board, currentPlayer, widthcenter-3);
@@ -60,8 +106,8 @@ int main(int argc, char *argv[]) {
 					}
 				} else if (currentPlayer == COMPUTER) {
 					node_t* root = node_init(board);
-    				tree_create(root);
-					node_t* max = tree_get_max(root);
+    				tree_create(root, depth);
+					node_t* max = tree_get_max(root, depth);
 					x = max->firstPieceAdded.x;
 					y = max->firstPieceAdded.y;
 
@@ -69,7 +115,6 @@ int main(int argc, char *argv[]) {
 					free(max);
     				root = calloc(sizeof(root), sizeof(node_t*));
     				max = calloc(sizeof(max), sizeof(node_t*));
-					sleep(3);
 				}	
 				board_add_piece(board, currentPlayer, x, y);
 				points_reset(board->points);

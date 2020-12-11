@@ -67,30 +67,30 @@ void node_calculate_value(node_t *node, int parent_value, int numOfChildren) {
     }
 }
 
-void tree_create(node_t *parent_node) {
-    if (parent_node->depth < 5) {
+void tree_create(node_t *parent_node, int depth) {
+    if (parent_node->depth < depth) {
         int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
         node_children_allocate(parent_node, numPoints);
         node_t* child_nodes[numPoints];
         for (int i = 0; i < numPoints; i++) {
             child_nodes[i] = node_add(parent_node, parent_node->board->points[i]->x, parent_node->board->points[i]->y);
             parent_node->children[i] = child_nodes[i];
-            tree_create(child_nodes[i]);
+            tree_create(child_nodes[i], depth);
         }
     }
 }
 
-node_t* tree_get_max(node_t *node) {
+node_t* tree_get_max(node_t *node, int depth) {
     node_t* max = (node_t*) malloc(sizeof(node_t));
     for (int i = 0; i < node->numOfChildren; i++) {
-        if (node->depth == 2) {
+        if (node->depth == depth-1) {
             if (max == NULL || node->children[i]->value >= max->value) {
                 max->firstPieceAdded.x = node->children[i]->firstPieceAdded.x;
                 max->firstPieceAdded.y = node->children[i]->firstPieceAdded.y;
                 max->value = node->children[i]->value;
             }
-        } else if (node->depth < 2) {
-            node_t* temp = tree_get_max(node->children[i]);
+        } else if (node->depth < depth-1) {
+            node_t* temp = tree_get_max(node->children[i], depth);
             if (temp->value > max->value) {
                 max->firstPieceAdded.x = temp->firstPieceAdded.x;
                 max->firstPieceAdded.y = temp->firstPieceAdded.y;
@@ -101,8 +101,9 @@ node_t* tree_get_max(node_t *node) {
                 }
             }
         }
+        board_delete(node->children[i]->board);
         free(node->children[i]);
-        node->children[i] = calloc(sizeof(node->children[i]), sizeof(node_t*));
+        node->children[i] = calloc(sizeof(node->children[i]), sizeof(node_t));
     }
     return max;
 }
