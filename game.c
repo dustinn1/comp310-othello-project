@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 							difficulty = argint;
 							break;
 						} else {
-							printf("Difficulty must be 0, 1, or 2\n");
+							printf("Difficulty must be 1, 2, or 3\n");
 							exit(EXIT_FAILURE);
 						}
 					}
