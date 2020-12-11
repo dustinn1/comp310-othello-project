@@ -11,3 +11,5 @@ An implementation of the Othello game written in C.
 3. Run `cmake .` to create a makefile to compile the code.
 4. Run `make` to create an executable to run the game.
 5. Run `./bin/game` to play the game.
+	- Add the difficulty parameter to set the difficulty: `./bin/game --difficulty [1-3]`
+	- Set to difficulty of 2 if no paramter is set
