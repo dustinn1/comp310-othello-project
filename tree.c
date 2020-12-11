@@ -4,6 +4,7 @@
 #include "tree.h"
 #include "board.h"
 
+// initialize the root node for a tree
 node_t* node_init(board_t *board) {
     node_t* node = (node_t*) malloc(sizeof(node_t));
 	node->depth = 0;
@@ -20,6 +21,7 @@ node_t* node_init(board_t *board) {
     return node;
 }
 
+// initialize and add a node to the tree as a child of a parent node
 node_t* node_add(node_t *parent, int x, int y) {
 	node_t* node = (node_t*) malloc(sizeof(node_t));
     node->board = board_copy(parent->board);
@@ -45,16 +47,23 @@ node_t* node_add(node_t *parent, int x, int y) {
 	return node;
 }
 
+// allocate the needed memory for a parent node to store its children nodes
+// in an array
 void node_children_allocate(node_t *node, int size) {
     node->numOfChildren = size;
     node->children = malloc(size * sizeof(node_t*));
 }
 
+// delete a node by free it from memory
 void node_delete(node_t *node) {
 	node = calloc(1, sizeof(node_t));
 	free(node);
 }
 
+// calculate the value of the node depending on the parent's value.
+// if the node is a computer, add the number of pieces that it flipped when its piece was added
+// and the number of children that it has afterwards
+// if player, do the same but subtract from the parent value.
 void node_calculate_value(node_t *node, int parent_value, int numOfChildren) {
     if (node->depth == 1) {
         node->value = node->piecesFlipped + numOfChildren;
@@ -67,6 +76,10 @@ void node_calculate_value(node_t *node, int parent_value, int numOfChildren) {
     }
 }
 
+// recursive function to create a tree 
+// get the possible positions that a piece can be placed on
+// and create enough children nodes to represent those possible positions
+// create the tree until it reaches the specified depth
 void tree_create(node_t *parent_node, int depth) {
     if (parent_node->depth < depth) {
         int numPoints = board_num_points(parent_node->board, parent_node->player == 'P' ? 'C' : 'P');
@@ -80,6 +93,8 @@ void tree_create(node_t *parent_node, int depth) {
     }
 }
 
+// find the largest value out of all of the bottommode nodes
+// get the first piece that was added that resulted in the value
 node_t* tree_get_max(node_t *node, int depth) {
     node_t* max = (node_t*) malloc(sizeof(node_t));
     for (int i = 0; i < node->numOfChildren; i++) {

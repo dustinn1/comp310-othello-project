@@ -16,6 +16,9 @@
 #define COMPUTER_NAME "Computer"
 
 int main(int argc, char *argv[]) {
+	// get the difficulty of the game
+	// if no difficulty parameter is set, then set the difficulty as 2
+	// otherwise, set the difficulty to 1, 2, or 3 depending on what was chosen
 	int difficulty;
 
 	if (argc == 1) {
@@ -79,6 +82,7 @@ int main(int argc, char *argv[]) {
 	char currentPlayer = PLAYER;
 	char* currentPlayerName = PLAYER_NAME;
 
+	// run the loop until the board is filled with pieces
 	while (!board_is_full(board)) {
 		int numPoints;
 		mvprintw(0, widthcenter, "Difficulty %i", difficulty);
@@ -93,8 +97,10 @@ int main(int argc, char *argv[]) {
 				mvprintw(20, widthcenter-13, "x y: ");
 				refresh();
 				if (currentPlayer == PLAYER) {
-					scanw("%d %d", &x, &y);
+					scanw("%d %d", &x, &y); // get the player's input
 					refresh();
+					// check to see if the coordinate the player enter is valie (x and y between 0 and 7)
+					// and that it is a possible position to place a piece on
 					while (((x < 0 || x > 7) || (y < 0 || y > 7)) || !points_contains(board->points, x, y)) {
 						color_set('r', NULL);
 						mvprintw(20, widthcenter-13, "Please enter a valid coordinate (x and y >= 0 and <= 7)");
@@ -105,12 +111,15 @@ int main(int argc, char *argv[]) {
 						scanw("%d %d", &x, &y);
 					}
 				} else if (currentPlayer == COMPUTER) {
+					// create a search tree to determine where to place a piece that would
+					// give the computer a better chance of winning.
 					node_t* root = node_init(board);
     				tree_create(root, depth);
 					node_t* max = tree_get_max(root, depth);
 					x = max->firstPieceAdded.x;
 					y = max->firstPieceAdded.y;
 
+					// remove the tree from memory
 					free(root);
 					free(max);
     				root = calloc(sizeof(root), sizeof(node_t*));
@@ -123,13 +132,16 @@ int main(int argc, char *argv[]) {
 				mvprintw(24, widthcenter-10, "%s piece added at x: %i, y: %i", currentPlayerName, x, y);	
 			}
 		}
+		// switch the current player
 		currentPlayer = currentPlayer == PLAYER ? COMPUTER : PLAYER;
 		currentPlayerName = currentPlayer == PLAYER ? PLAYER_NAME : COMPUTER_NAME;
 	}
 
+	// count the number of pieces each player has in the end
 	int PPieces = board_count_pieces(board, PLAYER);
 	int CPieces = board_count_pieces(board, COMPUTER);
 
+	// display the winner based on who has the largest number of pieces
 	clear();
 	board_print(board, currentPlayer, widthcenter+3);
 	mvprintw(18, widthcenter-9, "%s: %i pieces, %s: %i pieces", PLAYER_NAME, board_count_pieces(board, PLAYER), COMPUTER_NAME, board_count_pieces(board, COMPUTER));
@@ -137,6 +149,7 @@ int main(int argc, char *argv[]) {
 	refresh();
 	sleep(10);
 	
+	// delete the board from memory
 	board_delete(board);
 
 	endwin();

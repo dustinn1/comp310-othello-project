@@ -110,17 +110,17 @@ int board_flip_amount(board_t *board, char* direction, piece_t *piece) {
 			int i = 1;
 			int pieces = 0;
 			while (pieceX-i > -1) {
-				i++;
-				if (board->pieces[pieceY][pieceX-i] == NULL) break;
-				pieces++;
-				if (board->pieces[pieceY][pieceX-i]->color == pieceColor) {
-					return pieces;
+				i++; // continue to move left by incrementing the value of i
+				if (board->pieces[pieceY][pieceX-i] == NULL) break; // if the piece to the left is NULL, end the function
+				pieces++; // otherwise, if there is a piece, increment the pieces value
+				if (board->pieces[pieceY][pieceX-i]->color == pieceColor) { // if the next piece happens to be the same color as the piece that was just placed,
+					return pieces;											// return the pieces value
 				}
 			}
 			return 0;
 		}
 	}
-	if (strcmp(direction, "right") == 0) {
+	if (strcmp(direction, "right") == 0) { // similar process as left for rest of the directions 
 		if (pieceX != 7 && board->pieces[pieceY][pieceX+1] != NULL && board->pieces[pieceY][pieceX+1]->color != pieceColor) {	
 			int i = 1;
 			int pieces = 0;
@@ -310,6 +310,8 @@ bool board_is_full(board_t *board) {
 	return true;
 }
 
+// get the number of positions that a piece can be placed on depending on the
+// player
 int board_num_points(board_t *board, char color) {
 	int amount = 0;
 	for (int y = 0; y < 8; y++) {
@@ -323,6 +325,8 @@ int board_num_points(board_t *board, char color) {
 	return amount;
 }
 
+// get the number of pieces that would get flipped if a piece were to be placed
+// at a certain position on the board
 int board_amount_flipped(board_t *board, char color, int x, int y) {
 	piece_t *piece = piece_init(color, x, y);
 	char* directions[8] = { "right", "left", "up", "down", "topright", "bottomright", "bottomleft", "topleft" };
