@@ -101,7 +101,6 @@ node_t* tree_get_max(node_t *node, int depth) {
                 }
             }
         }
-        board_delete(node->children[i]->board);
         free(node->children[i]);
         node->children[i] = calloc(sizeof(node->children[i]), sizeof(node_t));
     }
